@@ -117,6 +117,11 @@ const { createBareServer } = require('@tomphttp/bare-server-node');
        root: join(__dirname, 'public'),
        prefix: '/',
        decorateReply: false,
+       setHeaders: (res, path) => {
+           if (path.endsWith('.js')) {
+               res.setHeader('Content-Type', 'application/javascript');
+           }
+       }
    });
  
    

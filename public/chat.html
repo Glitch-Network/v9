@@ -125,6 +125,7 @@
     <label for="nickname-input">Enter your nickname to join chat:</label>
     <input type="text" id="nickname-input" placeholder="Nickname" required autocomplete="off" />
     <button type="submit">Join Chat</button>
+    <p>Note: This app doesn't work on Vercel</p>
   </form>
   <div id="chat-container">
     <div id="chat-messages"></div>
@@ -149,7 +150,9 @@
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
 
-    const socket = io();
+    const socket = io({
+      path: '/api/socketio'
+    });
 
     let censorWords = [];
 

@@ -132,5 +132,33 @@
     
         </div>
     </div>
+  
+        <script type="module">
+            console.log('✅ #search input listener attached');
+            const searchInput = document.getElementById('search');
+    
+            if (!searchInput) {
+                console.error('❌ #search input not found');
+            } else {
+                console.log('✅ listener attached');
+    
+                searchInput.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const input = searchInput.value.trim();
+                        if (!input) return;
+    
+                        const maybeURL = /^(https?:\/\/|[a-z]+\.[a-z]{2,})/.test(input);
+                        const target = maybeURL
+                            ? input.match(/^https?:\/\//) ? input : `https://${input}`
+                            : `https://duckduckgo.com/?q=${encodeURIComponent(input)}`;
+    
+                        window.location.href = `launch_page.html?url=${encodeURIComponent(target)}`;
+                    }
+                });
+            }
+        </script>
+
+    
 </body>
 </html>
