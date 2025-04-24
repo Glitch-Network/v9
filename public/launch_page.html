@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -248,36 +247,13 @@ img {
 </script>
   <div id="searchbar">
     <span id="refresh" onclick="location.reload()" class="material-symbols-outlined" style="margin-right: 25px; color: black;">refresh</span>
+    <!--<span id="proxy-toggle" onclick="toggleProxyMode()" class="material-symbols-outlined" style="margin-right: 25px; color: black; cursor: pointer;" title="Toggle Proxy Mode">shield</span>-->
     <input id="search" oninput="search()" placeholder="Input a URL or search..." type="search"/>
     <span onclick="navigateToPage()" class="material-symbols-outlined" style="margin-left: 25px;">search</span>
     <span onclick="handle_eruda()" class="material-symbols-outlined" style="margin-left: 25px;">terminal</span>
     <span onclick="handle_fullscreen()" class="material-symbols-outlined" style="margin-left: 25px;">fullscreen</span>
 
-    <div class="country-flag" title="The path proxies your connection is going through.">
-      <span class="material-symbols-outlined" title="Your computer">
-        computer
-      </span>
-      <span class="material-symbols-outlined">
-        arrow_forward
-      </span>
-      
-      <img id="main_flag" src="https://flagsapi.com/US/shiny/64.png">
-
-
-      <div id="second_flag_div" style="display: none;">
-      <span class="material-symbols-outlined">
-        arrow_forward
-      </span>
-      <img id="second_flag" src="https://flagsapi.com/DE/shiny/64.png">
-      </div>
-      <span class="material-symbols-outlined" >
-        arrow_forward
-      </span>
-      
-      <span class="material-symbols-outlined" title="The destination.">
-        dns
-      </span>
-      
+            
     </div>
   </div>
 
@@ -575,6 +551,61 @@ set_flags()
         return [];
       }
     }
+
+    // Function to toggle proxy mode for current URL
+    function toggleProxyMode() {
+        const currentUrl = document.getElementById('search').value;
+        if (!currentUrl) return;
+
+        // Get current non-proxied URLs from localStorage
+        let nonProxiedUrls = JSON.parse(localStorage.getItem('nonProxiedUrls') || '[]');
+        
+        // Check if URL is already in non-proxied list
+        const index = nonProxiedUrls.indexOf(currentUrl);
+        if (index === -1) {
+            // Add to non-proxied list
+            nonProxiedUrls.push(currentUrl);
+            document.getElementById('proxy-toggle').style.color = '#03dac5'; // Teal color to indicate non-proxied
+        } else {
+            // Remove from non-proxied list
+            nonProxiedUrls.splice(index, 1);
+            document.getElementById('proxy-toggle').style.color = 'black';
+        }
+        
+        // Save updated list
+        localStorage.setItem('nonProxiedUrls', JSON.stringify(nonProxiedUrls));
+        
+        // Reload the page with the new proxy setting
+        loadUrl(currentUrl);
+    }
+
+    // Function to check if a URL should be proxied
+    function shouldProxyUrl(url) {
+        const nonProxiedUrls = JSON.parse(localStorage.getItem('nonProxiedUrls') || '[]');
+        return !nonProxiedUrls.includes(url);
+    }
+
+    // Modify the existing loadUrl function to handle non-proxied URLs
+    function loadUrl(url) {
+        if (shouldProxyUrl(url)) {
+            // Use UV proxy
+            window.location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+        } else {
+            // Load directly in iframe
+            const iframe = document.getElementById('uv-frame');
+            iframe.src = url;
+        }
+    }
+
+    // Update the search input handler to check proxy status
+    document.getElementById('search').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const url = this.value;
+            // Update proxy toggle button color based on current URL's proxy status
+            document.getElementById('proxy-toggle').style.color = shouldProxyUrl(url) ? 'black' : '#03dac5';
+            loadUrl(url);
+        }
+    });
   </script>
 </body>
 </html>

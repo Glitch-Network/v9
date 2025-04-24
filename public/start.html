@@ -151,7 +151,7 @@
                         const maybeURL = /^(https?:\/\/|[a-z]+\.[a-z]{2,})/.test(input);
                         const target = maybeURL
                             ? input.match(/^https?:\/\//) ? input : `https://${input}`
-                            : `https://duckduckgo.com/?q=${encodeURIComponent(input)}`;
+                            : `https://search.brave.com/search?q=${encodeURIComponent(input)}`;
     
                         window.location.href = `launch_page.html?url=${encodeURIComponent(target)}`;
                     }

@@ -10,8 +10,11 @@ const { createBareServer } = require('@tomphttp/bare-server-node');
    const proxyServer = httpProxy.createProxyServer();
    
    console.log("Fetching proxies...");
-   
- 
+
+   fastify.get("/isvercel", (req, reply) => {
+       // eh probably LOL
+       reply.status(200).send("true");
+   });
    fastify.get('/region', async (req, reply) => {
      const primaryUrl = 'https://ipapi.co/json/';
      const backupUrl = 'http://ip-api.com/json/';

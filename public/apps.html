@@ -45,7 +45,7 @@
             appDiv.className = 'app';
 
             const link = document.createElement('a');
-            link.href = game.link;
+            link.href = "launch.html?url=" + game.link;
             if (game.blank === "true") {
               link.target = '_blank';
             }
@@ -120,7 +120,7 @@
                 img = "assets/images/tor.png";
               }
               let code = `
-                <div id="app" onclick="window.location.href = './launch.html?url=${url}' ">
+                <div id="app" onclick="window.location.href = './launch.html?games=true&url=${url}' ">
                   <img src="${img}"/>
                   <div>${name}</div>
                 </div>

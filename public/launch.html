@@ -388,6 +388,12 @@ upload_workspace().then((contents) => {
             }
         });
 
+        // if the "game" parameter of the url is true, replace the workspace button with a "back to games.html" button
+        if (getURLParameter("games") === "true") {
+            document.getElementById("workspace").innerHTML = "Back to Games";
+            document.getElementById("workspace").href = "games.html";
+            
+        }
        
 
     </script>
