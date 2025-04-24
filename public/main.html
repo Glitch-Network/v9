@@ -1,239 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Glitch V8</title>
-    <link rel="icon" href="/assets/favicon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/assets/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-body {
-    margin: 0;
-    overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
-    background-image: url("assets/images/wallpaper.webp");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    display: flex; /* Flexbox for layout */
-    flex-direction: column; /* Stack elements vertically */
-    height: 100vh; /* Full viewport height */
-}
+      body {
+          margin: 0;
+          overflow: hidden;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+          background-image: url("assets/images/darkmode.png");
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          /* disable highlihghting */
+          user-select: none;
+          display: flex; /* Flexbox for layout */
+          flex-direction: column; /* Stack elements vertically */
+          height: 100vh; /* Full viewport height */
+      }
 
-html {
-    overflow: hidden;
-}
+      html {
+          overflow: hidden;
+      }
 
-html::-webkit-scrollbar, body::-webkit-scrollbar {
-    display: none;
-}
+      html::-webkit-scrollbar, body::-webkit-scrollbar {
+          display: none;
+      }
 
-html::-webkit-scrollbar, body::-webkit-scrollbar {
-    display: none;
-}
+      .window {
+          border: 1px solid #4a4a4a;
+          position: absolute;
+          width: 450px;
+          height: 350px;
+          box-shadow: 0 1px 5px 0 rgba(100, 100, 100, 0.7), 0 2px 8px 2px rgba(100, 100, 100, 0.4);
+          background: #1e1e1e;
+          resize: both;
+          overflow: auto;
+          top: 15vh;
+          left: 15vw;
+          border-radius: 8px;
+          scrollbar-width: thin;
+          scrollbar-color: #888 #222;
+          -ms-overflow-style: auto;
+          padding-bottom: 10px;
+          transition: box-shadow 0.2s ease;
+      }
 
-.window {
-    border: 1px solid rgba(255, 255, 255, 0.25); /* Slightly brighter border for glass effect */
-    position: absolute;
-    width: 450px;
-    height: 350px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Softer, more spread out shadow */
-    background-color: rgba(255, 255, 255, 0.1); /* Lighter, more translucent background for glass */
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05)); /* More pronounced top highlight */
-    backdrop-filter: blur(10px); /* Glass blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari */
-    resize: both;
-    overflow: auto;
-    top: 15vh;
-    left: 15vw;
-    border-radius: 10px; /* Slightly less rounded corners, more Aero-like */
-    scrollbar-width: thin; /* For Firefox scrollbar */
-    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1); /* Firefox scrollbar styling */
-    -ms-overflow-style: auto; /* Default scrollbar for IE/Edge */
-    padding-bottom: 10px; /* Slightly reduced padding */
-}
+      .window:hover {
+          box-shadow: 0 1px 8px 0 rgba(130, 130, 130, 0.8), 0 4px 12px 4px rgba(130, 130, 130, 0.5);
+      }
 
-.window::-webkit-scrollbar {
-    width: 8px; /* Thin scrollbar for Webkit */
-}
+      .window::-webkit-scrollbar {
+          width: 8px; /* Thin scrollbar for Webkit */
+      }
 
-.window::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.1); /* Darker scrollbar track */
-    border-radius: 10px;
-}
+      .window::-webkit-scrollbar-track {
+          background-color: #222; /* Darker scrollbar track */
+          border-radius: 10px;
+      }
 
-.window::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.3); /* Lighter scrollbar thumb */
-    border-radius: 10px;
-}
+      .window::-webkit-scrollbar-thumb {
+          background-color: #555; /* Darker scrollbar thumb */
+          border-radius: 10px;
+      }
 
+      .window-header {
+          display: flex;
+          justify-content: space-between;
+          background: #2a2a2a;
+          color: #ccc;
+          cursor: move;
+          padding: 8px 12px;
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+          border-bottom: 1px solid #444;
+          font-weight: 500;
+          font-size: 0.95em;
+      }
 
+      .window-title {
+          flex-grow: 1;
+          font-size: 1em; /* Slightly smaller title */
+          font-weight: bold; /* Bold title for better readability */
+          color: #bb86fc;
+      }
 
-.window-header {
-    display: flex;
-    justify-content: space-between;
-    background-color: rgba(255, 255, 255, 0.2); /* Lighter header background */
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)); /* Stronger header highlight */
-    color: #f0f0f0;
-    cursor: move;
-    padding: 8px 12px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Brighter header border */
-}
+      .btn {
+          background: none;
+          border: none;
+          padding: 5px 8px;
+          cursor: pointer;
+          color: #aaa;
+          font-size: 1em;
+          transition: color 0.1s ease;
+      }
 
-.window-title {
-    flex-grow: 1;
-    font-size: 1em; /* Slightly smaller title */
-    font-weight: bold; /* Bold title for better readability */
-    color: #913dc2; /* Inverted font color */
-}
+      .btn:hover {
+          color: #ddd;
+      }
 
-.btn {
-    background: none;
-    border: none;
-    padding: 5px; /* Slightly smaller button padding */
-    cursor: pointer;
-    color: #913dc2; /* Slightly brighter button text */
-    opacity: 0.8; /* Slightly transparent buttons */
-    transition: opacity 0.2s ease; /* Smooth opacity transition */
-}
+      .btn.close:hover {
+          color: #cf6679;
+      }
 
-.btn:hover {
-    opacity: 1; /* Fully opaque on hover */
-}
+      .window-content {
+          padding: 12px; /* Slightly reduced content padding */
+          color: #eee; /* Slightly brighter content text */
+          line-height: 1.5; /* Slightly tighter line height */
+          font-size: 0.95em; /* Slightly smaller font size */
+      }
 
-.window-content {
-    padding: 12px; /* Slightly reduced content padding */
-    color: #eee; /* Slightly brighter content text */
-    line-height: 1.5; /* Slightly tighter line height */
-    font-size: 0.95em; /* Slightly smaller font size */
-}
+      .window-content iframe {
+          border-radius: 10px; /* Adjust the value to control the roundness */
+          overflow: hidden; /* Ensure content within rounded corners is clipped */
+      }
 
-.window-content iframe {
-    border-radius: 10px; /* Adjust the value to control the roundness */
-    overflow: hidden; /* Ensure content within rounded corners is clipped */
-}
+      .toolbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 60px; /* Slightly taller toolbar */
+          background-color: rgba(255, 255, 255, 0.15); /* Slightly less transparent */
+          background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent); /* More subtle gradient */
+          color: #fff;
+          padding: 0 15px;
+          position: fixed;
+          bottom: 0;
+          user-select: none;
+          z-index: 10000;
+          width: calc(98% + 10px);
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.15); /* More visible border */
+          backdrop-filter: blur(10px); /* Apply blur to background */
+      }
 
+      .start-menu.material-symbols-outlined {
+          font-size: 30px; /* Larger icons */
+          cursor: pointer;
+          transition: transform 0.2s ease; /* Smooth icon animation */
+      }
 
-.toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px; /* Slightly taller toolbar */
-    background-color: rgba(255, 255, 255, 0.15); /* Slightly less transparent */
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent); /* More subtle gradient */
-    color: #fff;
-    padding: 0 15px;
-    position: fixed;
-    bottom: 0;
-    user-select: none;
-    z-index: 10000;
-    width: calc(98% + 10px);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15); /* More visible border */
-    backdrop-filter: blur(10px); /* Apply blur to background */
-}.start-menu.material-symbols-outlined {
-    font-size: 30px; /* Larger icons */
-    cursor: pointer;
-    transition: transform 0.2s ease; /* Smooth icon animation */
-}.start-menu.material-symbols-outlined:hover {
-    transform: scale(1.1); /* Slight zoom on hover */
-}.pinned-apps {
-    display: flex;
-    gap: 12px; /* Larger gap */
-}
-.pinned-apps span.material-symbols-outlined {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    padding: 8px;
-}
+      .start-menu.material-symbols-outlined:hover {
+          transform: scale(1.1); /* Slight zoom on hover */
+      }
 
-.pinned-apps.material-symbols-outlined {
-    font-size: 30px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}.pinned-apps.material-symbols-outlined:hover {
-    transform: scale(1.1);
-}.system-tray {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Larger gap */
-}.system-tray.material-symbols-outlined {
-    font-size: 22px; /* Slightly larger icons */
-    cursor: pointer;
-}.time {
-    font-size: 18px; /* Larger font size */
-    position: fixed;
-    right: 20px;
-    color: #fff;
-    font-weight: 500; /* Slightly bolder */
-}
+      .pinned-apps {
+          display: flex;
+          gap: 12px; /* Larger gap */
+      }
 
-.pinned-apps input {
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
-    border: none; /* Remove default border */
-    border-radius: 15px; /* Rounded corners */
-    padding: 8px 12px; /* Padding for comfortable text input */
-    color: white; /* White text color */
-    font-size: 16px; /* Readable font size */
-    flex-grow: 1; /* Allow input to grow and take available space */
-    min-width: 100px; /* Minimum width to prevent collapsing */
-}
+      .pinned-apps span.material-symbols-outlined {
+          background-color: rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
+          padding: 8px;
+      }
 
-.pinned-apps input::placeholder {
-    color: rgba(255, 255, 255, 0.5); /* Semi-transparent placeholder text */
-}
-#search_suggestions {
-    position: absolute;
-    top: 100%;
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust for element's width */
-    width: 100%; /* Match input width */
-    background-color: #1e1e1e; /* Slightly lighter than toolbar */
-    color: white;
-    border-radius: 0 0 15px 15px; /* Rounded bottom corners */
-    padding: 10px;
-    z-index: 100; /* Ensure it's above other elements */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    display: none; /* Initially hide the suggestions */
-}
+      .pinned-apps.material-symbols-outlined {
+          font-size: 30px;
+          cursor: pointer;
+          transition: transform 0.2s ease;
+      }
 
-#search_suggestions ul {
-    list-style: none; /* Remove bullet points */
-    padding: 0;
-    margin: 0;
-}
+      .pinned-apps.material-symbols-outlined:hover {
+          transform: scale(1.1);
+      }
 
-#search_suggestions li {
-    padding: 8px 12px;
-    cursor: pointer;
-}
+      .system-tray {
+          display: flex;
+          align-items: center;
+          gap: 10px; /* Larger gap */
+      }
 
-#search_suggestions li:hover {
-    background-color: #3a3a3a; /* Hover effect */
-}
+      .system-tray.material-symbols-outlined {
+          font-size: 22px; /* Slightly larger icons */
+          cursor: pointer;
+      }
 
-/* Style for the window - adjust selector if needed */
-.window {
-  overflow: hidden;
-}
+      .time {
+          font-size: 18px; /* Larger font size */
+          position: fixed;
+          right: 20px;
+          color: #fff;
+          font-weight: 500; /* Slightly bolder */
+      }
 
-/* Remove rounding when maximized for window */
-.window.maximized-no-round {
-  border-radius: 0;
-}
+      .pinned-apps input {
+          background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white background */
+          border: none; /* Remove default border */
+          border-radius: 15px; /* Rounded corners */
+          padding: 8px 12px; /* Padding for comfortable text input */
+          color: white; /* White text color */
+          font-size: 16px; /* Readable font size */
+          flex-grow: 1; /* Allow input to grow and take available space */
+          min-width: 100px; /* Minimum width to prevent collapsing */
+      }
 
-/* Remove top left-right rounding when maximized for toolbar */
-.toolbar.maximized-no-round {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
+      .pinned-apps input::placeholder {
+          color: rgba(255, 255, 255, 0.5); /* Semi-transparent placeholder text */
+      }
 
-</style>
+      #search_suggestions {
+          position: absolute;
+          top: 100%;
+          left: 50%; /* Center horizontally */
+          transform: translateX(-50%); /* Adjust for element's width */
+          width: 100%; /* Match input width */
+          background-color: #1e1e1e; /* Slightly lighter than toolbar */
+          color: white;
+          border-radius: 0 0 15px 15px; /* Rounded bottom corners */
+          padding: 10px;
+          z-index: 100; /* Ensure it's above other elements */
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+          display: none; /* Initially hide the suggestions */
+      }
+
+      #search_suggestions ul {
+          list-style: none; /* Remove bullet points */
+          padding: 0;
+          margin: 0;
+      }
+
+      #search_suggestions li {
+          padding: 8px 12px;
+          cursor: pointer;
+      }
+
+      #search_suggestions li:hover {
+          background-color: #3a3a3a; /* Hover effect */
+      }
+
+      /* Style for the window - adjust selector if needed */
+      .window {
+        overflow: hidden;
+      }
+
+      /* Remove rounding when maximized for window */
+      .window.maximized-no-round {
+        border-radius: 0;
+      }
+
+      /* Remove top left-right rounding when maximized for toolbar */
+      .toolbar.maximized-no-round {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .snap-preview-box {
+          position: fixed;
+          top: 0;
+          height: calc(100vh - 60px); /* Full height minus toolbar */
+          width: 50vw;
+          background-color: rgba(145, 61, 194, 0.3); /* Semi-transparent purple */
+          border: 2px dashed #913dc2;
+          pointer-events: none; /* Ignore mouse events */
+          z-index: 9999;
+          transition: opacity 0.2s ease;
+          opacity: 0;
+      }
+      .snap-preview-box.visible {
+          opacity: 1;
+      }
+      .snap-preview-left {
+          left: 0;
+      }
+      .snap-preview-right {
+          right: 0;
+      }
+
+      @keyframes empty_trash {
+        /* wobble effect */
+
+        0% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(10deg);
+        }
+        50% {
+          transform: rotate(0deg);
+        }
+        75% {
+          transform: rotate(-10deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+    </style>
 </head>
 <body>
   <div id="search_suggestions">
@@ -248,180 +307,786 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
             <span class="material-symbols-outlined">circle</span>
         </div>
         <div class="pinned-apps">
-            <input placeholder="Search" id="searchInput">
+            <input placeholder="Search" id="searchInput" />
             <span class="material-symbols-outlined" onclick="openApp('terminal')">terminal</span>
             <span class="material-symbols-outlined" onclick="openApp('web')">public</span>
             <span class="material-symbols-outlined" onclick="openApp('game')">sports_esports</span>
-            <span class="material-symbols-outlined" onclick="openApp('glpaint')">brush</span>
             <span class="material-symbols-outlined" onclick="openApp('gpt')">robot</span>
-            <span class="material-symbols-outlined" onclick="openApp('tv')">tv</span>
-            <span class="material-symbols-outlined" onclick="openApp('settings')">settings</span>
+            <span class="material-symbols-outlined" onclick="openApp('chat')">chat</span>
+            <span class="material-symbols-outlined" onclick="openApp('miniplayer')">play_circle</span>
         </div>
         <div class="system-tray">
             <div id="clock" class="time"></div>
         </div>
     </div>
-    <script>let zIndexCounter = 1000; // Start with a high z-index value
+    <script defer>
 
-function createWindow(id, title, content) {
-    const windowElement = document.createElement('div');
-    windowElement.className = 'window';
-    windowElement.id = id * Math.random() * 120
-    windowElement.style.zIndex = ++zIndexCounter;
+      // time
+      function updateClock() {
+          const now = new Date();
+          const hours = now.getHours();
+          const minutes = now.getMinutes();
+          const seconds = now.getSeconds();
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+          const formattedHours = hours % 12 || 12;
+          const formattedMinutes = minutes.toString().padStart(2, '0');
+          const timeString = `${formattedHours}:${formattedMinutes} ${ampm}`;
+          document.getElementById('clock').textContent = timeString;
+      }
 
-    const header = document.createElement('div');
-    header.className = 'window-header';
-    const titleElement = document.createElement('span');
-    titleElement.textContent = title;
-    titleElement.className = 'window-title';
-    header.appendChild(titleElement);
+      updateClock();
 
-    const minimizeBtn = document.createElement('button');
-    minimizeBtn.textContent = '_';
-    minimizeBtn.className = 'btn minimize';
-    header.appendChild(minimizeBtn);
+      setInterval(updateClock, 1000);
 
-    const maximizeBtn = document.createElement('button');
-    maximizeBtn.textContent = '□';
-    maximizeBtn.className = 'btn maximize';
-    header.appendChild(maximizeBtn);
+      function openApp(name) {
+          if (name === 'fileexplorer') {
+              //public\fileexplorer.html
+              createWindow(Math.random().toString(36).substring(2, 15), 'File Explorer', '<iframe src="fileexplorer.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>');
+              return;
+          }
+          if (name === 'dash') {
+              createWindow(Math.random().toString(36).substring(2, 15), 'Dashboard', '<iframe src="features/dashboard.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>');
+              return;
+          }
+          if (name === 'terminal') {
+              createWindow(Math.random().toString(36).substring(2, 15), 'Terminal', '<iframe src="features/terminal.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>');
+              return;
+          }
+          if (name === 'web') {
+              createWindow(Math.random().toString(36).substring(2, 15), 'Web', '<iframe src="launch.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>');
+              return;
+          }
+          if (name === 'game') {
+              createWindow(Math.random().toString(36).substring(2, 15), 'Games', '<iframe src="games.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>');
+              return;
+          }
+          if (name === 'gpt') {
+              createWindow(Math.random().toString(36).substring(2, 15), 'GPT', '<iframe src="features/gpt.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>');
+              return;
+          }
+          if (name === 'chat') {
+              createWindow(Math.random().toString(36).substring(2, 15), 'Chat', '<iframe src="chat.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>');
+              return;
+          }
+          if (name === 'miniplayer') {
+              createWindow(Math.random().toString(36).substring(2, 15), 'Mini Player', '<iframe src="features/miniplayer.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>');
+              return;
+          }
+          console.log(`App '${name}' is not implemented.`);
+      }
 
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = '×';
-    closeBtn.className = 'btn close';
-    header.appendChild(closeBtn);
+      let zIndexCounter = 1000; // Start with a high z-index value
+      
+      function createWindow(id, title, content) {
+          const windowElement = document.createElement('div');
+          windowElement.className = 'window';
+          windowElement.id = id;
+          windowElement.style.zIndex = ++zIndexCounter;
+      
+          const header = document.createElement('div');
+          header.className = 'window-header';
+          const titleElement = document.createElement('span');
+          titleElement.textContent = title;
+          titleElement.className = 'window-title';
+          header.appendChild(titleElement);
+      
+          const minimizeBtn = document.createElement('button');
+          minimizeBtn.textContent = '_';
+          minimizeBtn.className = 'btn minimize';
+          header.appendChild(minimizeBtn);
+      
+          const maximizeBtn = document.createElement('button');
+          maximizeBtn.textContent = '□';
+          maximizeBtn.className = 'btn maximize';
+          header.appendChild(maximizeBtn);
+      
+          const closeBtn = document.createElement('button');
+          closeBtn.textContent = '×';
+          closeBtn.className = 'btn close';
+          header.appendChild(closeBtn);
+      
+          windowElement.appendChild(header);
+      
+          const contentElement = document.createElement('div');
+          contentElement.className = 'window-content';
+          contentElement.style.height = 'calc(100% - 30px)'; // Adjust height to take into account header height
+          contentElement.innerHTML = content;
+          windowElement.appendChild(contentElement);
+      
+          document.body.appendChild(windowElement);
+      
+          addWindowFunctionality(windowElement, header);
+          return windowElement;
+      }
+      
+      document.getElementById('searchInput').addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+              const searchQuery = this.value;
+              const url = 'launch.html?url=' + encodeURIComponent(searchQuery);
+              createWindow(Math.random().toString(36).substring(2, 15), 'Tabs', `<iframe src="${url}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`);
+          }
+      });
+      
+      function addWindowFunctionality(windowElement, header) {
+          let isDragging = false, offsetX, offsetY;
+          let originalWidth, originalHeight, originalLeft, originalTop;
+          let snapPreviewBox = document.createElement('div');
+          snapPreviewBox.className = 'snap-preview-box';
+          document.body.appendChild(snapPreviewBox);
+      
+          header.onmousedown = function(event) {
 
-    windowElement.appendChild(header);
 
-    const contentElement = document.createElement('div');
-    contentElement.className = 'window-content';
-    contentElement.style.height = 'calc(100% - 30px)'; // Adjust height to take into account header height
-    contentElement.innerHTML = content;
-    windowElement.appendChild(contentElement);
+              isDragging = true;
+              offsetX = event.clientX - windowElement.offsetLeft;
+              offsetY = event.clientY - windowElement.offsetTop;
+      
+              if (!windowElement.classList.contains('snapped-left') && !windowElement.classList.contains('snapped-right')) {
+                  originalWidth = windowElement.style.width;
+                  originalHeight = windowElement.style.height;
+                  originalLeft = windowElement.style.left;
+                  originalTop = windowElement.style.top;
+              }
+      
+              document.onmousemove = function(event) {
+                  if (!isDragging) return;
+                  
+                  const x = event.clientX - offsetX;
+                  const y = event.clientY - offsetY;
+                  windowElement.style.left = `${x}px`;
+                  windowElement.style.top = `${y}px`;
+      
+                  const nearLeft = event.clientX < 50;
+                  const nearRight = event.clientX > window.innerWidth - 50;
+      
+                  snapPreviewBox.classList.remove('visible', 'snap-preview-left', 'snap-preview-right');
+                  
+                  if (nearLeft) {
+                      snapPreviewBox.classList.add('visible', 'snap-preview-left');
+                  } else if (nearRight) {
+                      snapPreviewBox.classList.add('visible', 'snap-preview-right');
+                  }
+              };
+      
+              document.onmouseup = function(event) {
+                  isDragging = false;
+                  snapPreviewBox.classList.remove('visible', 'snap-preview-left', 'snap-preview-right');
+      
+                  const nearLeft = event.clientX < 50;
+                  const nearRight = event.clientX > window.innerWidth - 50;
+      
+                  if (nearLeft) {
+                      windowElement.style.left = '0';
+                      windowElement.style.width = '50vw';
+                      windowElement.style.top = '0';
+                      windowElement.style.height = 'calc(100vh - 60px)';
+                      windowElement.classList.add('snapped-left');
+                      windowElement.classList.remove('snapped-right', 'maximized', 'maximized-no-round');
+                  } else if (nearRight) {
+                      windowElement.style.left = '50vw';
+                      windowElement.style.width = '50vw';
+                      windowElement.style.top = '0';
+                      windowElement.style.height = 'calc(100vh - 60px)';
+                      windowElement.classList.add('snapped-right');
+                      windowElement.classList.remove('snapped-left', 'maximized', 'maximized-no-round');
+                  } else if (windowElement.classList.contains('snapped-left') || windowElement.classList.contains('snapped-right')) {
+                      windowElement.classList.remove('snapped-left', 'snapped-right');
+                      windowElement.style.width = originalWidth;
+                      windowElement.style.height = originalHeight;
+                      windowElement.style.left = originalLeft;
+                      windowElement.style.top = originalTop;
+                  }
+      
+                  document.onmousemove = document.onmouseup = null;
+              };
+          };
+      
+          windowElement.querySelector('.minimize').onclick = function() {
+              const content = windowElement.querySelector('.window-content');
+              // Store current size/position before minimizing
+              if (content.style.display !== 'none') {
+                  windowElement.dataset.originalWidth = windowElement.style.width;
+                  windowElement.dataset.originalHeight = windowElement.style.height;
+                  windowElement.dataset.originalLeft = windowElement.style.left;
+                  windowElement.dataset.originalTop = windowElement.style.top;
+              }
+              windowElement.style.height = content.style.display === 'none' ? (windowElement.dataset.originalHeight || '300px') : '30px';
+              windowElement.style.width = content.style.display === 'none' ? (windowElement.dataset.originalWidth || '400px') : windowElement.style.width; // Keep width on minimize
+              content.style.display = content.style.display === 'none' ? 'block' : 'none';
+              // Restore position on unminimize
+              if (content.style.display !== 'none') {
+                   windowElement.style.left = windowElement.dataset.originalLeft || '100px';
+                   windowElement.style.top = windowElement.dataset.originalTop || '100px';
+              }
+          };
+      
+          windowElement.querySelector('.maximize').onclick = function() {
+              if (windowElement.classList.contains('maximized')) {
+                  windowElement.classList.remove('maximized');
+                  windowElement.classList.remove('maximized-no-round'); // Remove class for no rounding
+                  windowElement.classList.remove('snapped-left', 'snapped-right'); // Remove snapped classes
+                  // Restore original size and position (from before maximize)
+                  windowElement.style.width = windowElement.dataset.preMaximizeWidth || '400px';
+                  windowElement.style.height = windowElement.dataset.preMaximizeHeight || '300px';
+                  windowElement.style.left = windowElement.dataset.preMaximizeLeft || '100px';
+                  windowElement.style.top = windowElement.dataset.preMaximizeTop || '100px';
+              } else {
+                  // Store current size and position before maximizing
+                  windowElement.dataset.preMaximizeWidth = windowElement.style.width;
+                  windowElement.dataset.preMaximizeHeight = windowElement.style.height;
+                  windowElement.dataset.preMaximizeLeft = windowElement.style.left;
+                  windowElement.dataset.preMaximizeTop = windowElement.style.top;
+      
+                  windowElement.classList.add('maximized');
+                  windowElement.classList.add('maximized-no-round'); // Add class for no rounding
+                  windowElement.classList.remove('snapped-left', 'snapped-right'); // Remove snapped classes
+                  windowElement.style.width = '100vw';
+                  windowElement.style.height = 'calc(100vh - 60px)'; // Full height minus toolbar
+                  windowElement.style.left = '0';
+                  windowElement.style.top = '0';
+              }
+          };
+      
+          windowElement.querySelector('.close').onclick = function() {
+              document.body.removeChild(windowElement);
+          };
+      }
+      window.openApp = function(app) {
+          // Helper to append ?vm=1 if in VM
+          function appendVMParam(url) {
+              if (window.isInVM) {
+                  if (url.indexOf('?') === -1) {
+                      return url + '?vm=1';
+                  } else {
+                      return url + '&vm=1';
+                  }
+              }
+              return url;
+          }
 
-    document.body.appendChild(windowElement);
+          if (app == "game") {
+              createWindow(Math.random().toString(36).substring(2, 15), "Games", `<iframe src="${appendVMParam('apps.html')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          } else if (app == "web") {
+              createWindow(Math.random().toString(36).substring(2, 15), "Tabs", `<iframe src="${appendVMParam('launch.html')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          } else if (app == "discord") {
+              createWindow(Math.random().toString(36).substring(2, 15), "Discord", `<iframe src="${appendVMParam('/assets-images/backgrounds/aHZ0cnM4JTJGLWRrc2FvcGQlMkNjbW0tYXFzZ3RxJTJGJTYwOSUzQjk3NTA1YzUwZGE1JTNBYWdjZDUlMkNzdGc%3D')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          } else if (app == "terminal") {
+              createWindow(Math.random().toString(36).substring(2, 15), "Terminal", `<iframe src="${appendVMParam('/features/terminal.html')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          } else if (app == "dash") {
+              createWindow(Math.random().toString(36).substring(2, 15), "Dashboard", `<iframe src="${appendVMParam('/features/dashboard.html')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          } else if (app == "settings") {
+              createWindow(Math.random().toString(36).substring(2, 15), "Settings", `<iframe src="${appendVMParam('/settings.html')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          } else if (app == "gpt") {
+              //https://deepseek.net/chat
+              createWindow(Math.random().toString(36).substring(2, 15), "ChatGPT", `<iframe src="${appendVMParam('/launch_page.html?url=https://deepai.org/chat/free-chatgpt')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          } else if (app == "tv") {
+          } else if (app == "miniplayer") {
+              let url = prompt('Enter YouTube URL:');
+              if (url) {
+                  const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|embed)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+                  const match = url.match(regex);
+                  videoId = null;
+                  if (match) {
+                       videoId = match[1];
+                  }
+                  else{
+                      alert('Invalid YouTube URL.');
+                      return
+                  }
+                  if (videoId) {
+                      const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1`;
+                      createWindow(
+                          Math.random().toString(36).substring(2, 15),
+                          'Mini-Player',
+                          `<iframe src="${embedUrl}" style="border:0; flex-grow:1; width:100%; height:100%;" allow="autoplay; encrypted-media" allowfullscreen></iframe>`,
+                          true
+                      );
+                  } else {
+                      alert('Invalid YouTube URL.');
+                  }
+              }
+          } else if (app == "swiftlytv") {
+              createWindow(Math.random().toString(36).substring(2, 15), "Swiftly TV", `<iframe src="${appendVMParam('/launch_page.html?url=https://swifly.cloud/movies.html')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          } else if (app == "chat") {
+              createWindow(Math.random().toString(36).substring(2, 15), "Chat", `<iframe src="${appendVMParam('/chat.html')}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`, true);
+          }
+      };
+    </script>
 
-    addWindowFunctionality(windowElement, header);
-    return windowElement;
-}
-
-document.getElementById('searchInput').addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        const searchQuery = this.value;
-        const url = 'launch.html?url=' + encodeURIComponent(searchQuery);
-        createWindow(Math.random().toString(36).substring(2, 15), 'Tabs', `<iframe src="${url}" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>`);
+    <style>
+    #selectionBox {
+        position: fixed;
+        border: 2px dashed #4a90e2;
+        background-color: rgba(74, 144, 226, 0.2);
+        pointer-events: none;
+        display: none;
+        z-index: 25000;
+        border-radius: 4px;
     }
-});
-function addWindowFunctionality(windowElement, header) {
-    let isDragging = false, offsetX, offsetY;
-    header.onmousedown = function(event) {
-        isDragging = true;
-        offsetX = event.clientX - windowElement.offsetLeft;
-        offsetY = event.clientY - windowElement.offsetTop;
-        document.onmousemove = function(event) {
-            if (isDragging) {
-                windowElement.style.left = `${event.clientX - offsetX}px`;
-                windowElement.style.top = `${event.clientY - offsetY}px`;
-            }
-        };
-        document.onmouseup = function() {
-            isDragging = false;
-            document.onmousemove = document.onmouseup = null;
-        };
-    };
+    </style>
 
-    windowElement.querySelector('.minimize').onclick = function() {
-        const content = windowElement.querySelector('.window-content');
-        windowElement.style.height = content.style.display === 'none' ? '300px' : '30px';
-        content.style.display = content.style.display === 'none' ? 'block' : 'none';
-    };
+    <div id="selectionBox"></div>
 
-    windowElement.querySelector('.maximize').onclick = function() {
-        if (windowElement.classList.contains('maximized')) {
-            windowElement.classList.remove('maximized');
-            windowElement.classList.remove('maximized-no-round'); // Remove class for no rounding
-            windowElement.style.width = '400px';
-            windowElement.style.height = '300px';
-            windowElement.style.left = '100px';
-            windowElement.style.top = '100px';
-        } else {
-            windowElement.classList.add('maximized');
-            windowElement.classList.add('maximized-no-round'); // Add class for no rounding
-            windowElement.style.width = '100vw';
-            windowElement.style.height = '93%';
-            windowElement.style.left = '0';
-            windowElement.style.top = '0';
+    <script>
+    (function() {
+        const selectionBox = document.getElementById('selectionBox');
+        let startX, startY, currentX, currentY;
+        let isSelecting = false;
+
+        function updateSelectionBox() {
+            const x = Math.min(startX, currentX);
+            const y = Math.min(startY, currentY);
+            const width = Math.abs(startX - currentX);
+            const height = Math.abs(startY - currentY);
+            selectionBox.style.left = x + 'px';
+            selectionBox.style.top = y + 'px';
+            selectionBox.style.width = width + 'px';
+            selectionBox.style.height = height + 'px';
         }
-    };
 
-    windowElement.querySelector('.close').onclick = function() {
-        document.body.removeChild(windowElement);
-    };
-}
-function openApp(app){
-    if (app == "game"){
-        createWindow(Math.random().toString(36).substring(2, 15), 'Games', '<iframe src="apps.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);
-    }
-    else if (app == "web"){
-        createWindow(Math.random().toString(36).substring(2, 15), 'Tabs', '<iframe src="launch.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);
-    }
-    else if (app == "discord"){
-        createWindow(Math.random().toString(36).substring(2, 15), 'Discord', '<iframe src="/assets-images/backgrounds/aHZ0cnM4JTJGLWRrc2FvcGQlMkNjbW0tYXFzZ3RxJTJGJTYwOSUzQjk3NTA1YzUwZGE1JTNBYWdjZDUlMkNzdGc%3D" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);
-    }
-    else if (app == "terminal"){
-      createWindow(Math.random().toString(36).substring(2, 15), 'Terminal', '<iframe src="/features/terminal.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);  
-    }
-    else if (app == "glpaint"){
-        createWindow(Math.random().toString(36).substring(2, 15), 'GL Paint', '<iframe src="/features/glpaint.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);
-    }
-    else if (app == "dash"){
-      createWindow(Math.random().toString(36).substring(2, 15), 'Dashboard', '<iframe src="/features/dashboard.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);  
-    }
-    else if (app == "settings"){
-        createWindow(Math.random().toString(36).substring(2, 15), 'Settings', '<iframe src="/settings.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);  
-    }
-    else if (app == "settings"){
-        createWindow(Math.random().toString(36).substring(2, 15), 'Settings', '<iframe src="/settings.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);  
-    }
-    else if (app == "gpt"){
-        //https://deepseek.net/chat
-        createWindow(Math.random().toString(36).substring(2, 15), 'ChatGPT', '<iframe src="/launch_page.html?url=https://deepai.org/chat/free-chatgpt" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);  
-    }
-    else if (app == "tv"){
-        createWindow(Math.random().toString(36).substring(2, 15), 'Swiftly TV', '<iframe src="/launch_page.html?url=https://swifly.cloud/movies.html" style="border:0; flex-grow:1; width:100%; height:100%;"></iframe>', true);  
-    }
-}
+        document.addEventListener('mousedown', function(e) {
+            // Only start selection if left mouse button
+            if (e.button !== 0) return;
+            isSelecting = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            currentX = startX;
+            currentY = startY;
+            updateSelectionBox();
+            selectionBox.style.display = 'block';
 
+            // Clear previous selection on new selection start
+            clearSelectedItems();
+        });
 
+        // Track selected items
+        const selectedItems = new Set();
 
-// script.js
+        function clearSelectedItems() {
+            selectedItems.forEach(item => item.classList.remove('selected'));
+            selectedItems.clear();
+        }
 
-function updateTime() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    const strTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-    document.getElementById('clock').textContent = strTime;
-}
+        function selectItem(item) {
+            if (!selectedItems.has(item)) {
+                selectedItems.add(item);
+                item.classList.add('selected');
+            }
+        }
 
-setInterval(() => {
-    const wallpaper = localStorage.getItem('wallpaper');
-    if (wallpaper === undefined) {
-        document.body.style.backgroundImage = `url('assets/images/wallpaper.webp')`;
-    } else if (wallpaper) {
-        document.body.style.backgroundImage = `url('${wallpaper}')`;
+        function updateSelection() {
+            clearSelectedItems();
+            const rect = selectionBox.getBoundingClientRect();
+            const items = document.querySelectorAll('.desktop-item');
+            items.forEach(item => {
+                const itemRect = item.getBoundingClientRect();
+                if (
+                    itemRect.left < rect.right &&
+                    itemRect.right > rect.left &&
+                    itemRect.top < rect.bottom &&
+                    itemRect.bottom > rect.top
+                ) {
+                    selectItem(item);
+                }
+            });
+        }
+        
+        document.addEventListener('mousemove', function(e) {
+            if (!isSelecting) return;
+            currentX = e.clientX;
+            currentY = e.clientY;
+            updateSelectionBox();
+            updateSelection();
+        });
+        
+        document.addEventListener('mouseup', function(e) {
+            if (!isSelecting) return;
+            isSelecting = false;
+            selectionBox.style.display = 'none';
+            // Selection finalized
+        });
+        
+        // Make selected items draggable as a group
+        function setupDragForSelectedItems() {
+            selectedItems.forEach(item => {
+                item.setAttribute('draggable', 'true');
+                item.addEventListener('dragstart', dragStartHandler);
+                item.addEventListener('dragend', dragEndHandler);
+            });
+        }
+        
+        function clearDragHandlers() {
+            selectedItems.forEach(item => {
+                item.removeAttribute('draggable');
+                item.removeEventListener('dragstart', dragStartHandler);
+                item.removeEventListener('dragend', dragEndHandler);
+            });
+        }
+        
+        function dragStartHandler(e) {
+            const draggedItems = Array.from(selectedItems).map(item => {
+                return {
+                    name: item.getAttribute('data-name'),
+                    isFolder: item.getAttribute('data-isfolder') === 'true'
+                };
+            });
+            e.dataTransfer.setData('application/json', JSON.stringify(draggedItems));
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function dragEndHandler(e) {
+            clearDragHandlers();
+        }
+        
+        // Setup drag on click or other event on desktop items
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('desktop-item')) {
+                if (!e.shiftKey && !e.ctrlKey) {
+                    clearSelectedItems();
+                }
+                selectItem(e.target);
+                clearDragHandlers();
+                setupDragForSelectedItems();
+            }
+        });
+    })();
+    </script>
+
+    <style>
+    #customContextMenu {
+        position: fixed;
+        background: #2a2a2a;
+        border: 1px solid #555;
+        border-radius: 6px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        color: #eee;
+        width: 180px;
+        display: none;
+        z-index: 20000;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-}, 1000);
-const wallpaper = localStorage.getItem('wallpaper');
-if (wallpaper === undefined) {
-    document.body.style.backgroundImage = `url('assets/images/wallpaper.webp')`;
-} else if (wallpaper) {
-    document.body.style.backgroundImage = `url('${wallpaper}')`;
-}
-updateTime(); // initial call to display time immediately
-</script>
-</body>
+    #customContextMenu ul {
+        list-style: none;
+        margin: 0;
+        padding: 8px 0;
+    }
+    #customContextMenu li {
+        padding: 8px 16px;
+        cursor: pointer;
+        user-select: none;
+    }
+    #customContextMenu li:hover {
+        background-color: #444;
+    }
+    </style>
+
+    <div id="customContextMenu">
+        <ul>
+            <li data-action="miniplayer">Miniplayer</li>
+            <li data-action="browser">Browser</li>
+            <li data-action="dashboard">Dashboard</li>
+            <li data-action="terminal">Terminal</li>
+            <li data-action="createfile">Create File</li>
+        </ul>
+    </div>
+
+    <script>
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        const menu = document.getElementById('customContextMenu');
+        menu.style.top = e.clientY + 'px';
+        menu.style.left = e.clientX + 'px';
+        menu.style.display = 'block';
+    });
+
+    document.addEventListener('click', function(e) {
+        const menu = document.getElementById('customContextMenu');
+        if (menu.style.display === 'block') {
+            menu.style.display = 'none';
+        }
+    });
+
+    document.getElementById('customContextMenu').addEventListener('click', function(e) {
+        if (e.target.tagName === 'LI') {
+            const action = e.target.getAttribute('data-action');
+            if (action === 'miniplayer') {
+                window.openApp('miniplayer');
+            } else if (action === 'browser') {
+                window.openApp('web');
+            } else if (action === 'dashboard') {
+                window.openApp('dash');
+            } else if (action === 'terminal') {
+                window.openApp('terminal');
+            } else if (action === 'createfile') {
+                const fileName = prompt('Enter the name of the new file:');
+                if (fileName) {
+                    // Assuming root directory 'C:\\' for file creation
+                    const result = touch('C:\\', fileName);
+                    alert(result);
+                    window.location.reload();
+                }
+            }
+            this.style.display = 'none';
+        }
+    });
+    </script>
+    <script type="module" src="scripts/js/filesystem.js" defer></script>
+
+    <div id="file-list" style="color: white; padding: 10px; font-family: monospace; white-space: pre-wrap;"></div>
+
+    <style>
+      .desktop-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80px;
+        color: white;
+        cursor: default;
+        user-select: none;
+        padding: 5px;
+        border-radius: 6px;
+        transition: background-color 0.2s ease;
+      }
+      .desktop-item.selected,
+      .desktop-item.highlighted {
+        background-color: rgba(74, 144, 226, 0.5);
+      }
+      #trash-bin {
+        width: 80px;
+        color: white;
+        cursor: pointer;
+        user-select: none;
+        padding: 5px;
+        border-radius: 6px;
+        transition: background-color 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #trash-bin img {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+      }
+      #trash-bin.drag-over {
+        background-color: rgba(74, 144, 226, 0.5);
+      }
+    </style>
+
+    <script type="module">
+      import { ls, deleteItem } from './scripts/js/filesystem.js';
+
+      const fileListDiv = document.getElementById('file-list');
+
+      function renderTrashBin() {
+        const trashBin = document.createElement('div');
+        trashBin.id = 'trash-bin';
+        trashBin.setAttribute('draggable', 'false');
+
+        const img = document.createElement('img');
+        img.src = 'assets/images/trash.png';
+        img.alt = 'Trash Bin';
+
+        const label = document.createElement('span');
+        label.textContent = 'Trash';
+
+        trashBin.appendChild(img);
+        trashBin.appendChild(label);
+
+        // Drag events for visual feedback
+        trashBin.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          trashBin.classList.add('drag-over');
+        });
+
+        trashBin.addEventListener('dragleave', (e) => {
+          trashBin.classList.remove('drag-over');
+        });
+
+        trashBin.addEventListener('drop', (e) => {
+          e.preventDefault();
+          trashBin.classList.remove('drag-over');
+          const data = e.dataTransfer.getData('text/plain');
+          if (!data) return;
+          try {
+            const { name, isFolder } = JSON.parse(data);
+            // Delete the item from root directory (C:\)
+            const result = deleteItem('C:\\', name);
+            console.log(result);
+            renderFileSystem('C:\\');
+; 
+          } catch (err) {
+            console.error('Failed to parse drag data', err);
+          }
+        });
+
+        return trashBin;
+      }
+
+      function renderFileSystem(path) {
+        const rawList = ls(path);
+        if (typeof rawList !== 'string') {
+          fileListDiv.textContent = 'Failed to load directory contents.';
+          return;
+        }
+        const entries = rawList.split('\n').filter(e => e.trim().length > 0);
+        fileListDiv.innerHTML = '';
+        fileListDiv.style.display = 'flex';
+        fileListDiv.style.flexWrap = 'wrap';
+        fileListDiv.style.gap = '15px';
+
+        // Insert trash bin as first item
+        const trashBin = renderTrashBin();
+        fileListDiv.appendChild(trashBin);
+
+        entries.forEach(entry => {
+          const isFolder = entry.endsWith('\\');
+          const name = isFolder ? entry.slice(0, -1) : entry;
+          const itemDiv = document.createElement('div');
+          itemDiv.classList.add('desktop-item');
+          itemDiv.setAttribute('draggable', 'true');
+          itemDiv.dataset.name = name;
+          itemDiv.dataset.isFolder = isFolder;
+
+          const img = document.createElement('img');
+          img.src = isFolder ? 'assets/images/folder.png' : 'assets/images/document.png';
+          img.alt = isFolder ? 'Folder' : 'File';
+          img.style.width = '48px';
+          if (isFolder == 0){
+                      // edit the settings to make it a bit ligheter
+          img.style.filter = 'brightness(1.5)';
+          }
+          img.style.height = '48px';
+          img.style.objectFit = 'contain';
+
+          const label = document.createElement('span');
+          label.textContent = name;
+          label.style.marginTop = '5px';
+          label.style.textAlign = 'center';
+          label.style.wordBreak = 'break-word';
+          label.style.fontSize = '14px';
+
+          itemDiv.appendChild(img);
+          itemDiv.appendChild(label);
+          fileListDiv.appendChild(itemDiv);
+
+          // Click handler to toggle selection
+          itemDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (itemDiv.classList.contains('selected')) {
+              itemDiv.classList.remove('selected');
+            } else {
+              // If Ctrl or Cmd key is not pressed, clear other selections
+              if (!e.ctrlKey && !e.metaKey) {
+                clearAllSelections();
+              }
+              itemDiv.classList.add('selected');
+            }
+          });
+
+          // Drag start handler to set drag data
+          itemDiv.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', JSON.stringify({
+              name: name,
+              isFolder: isFolder
+            }));
+            // Optionally, set drag image
+            // e.dataTransfer.setDragImage(itemDiv, 10, 10);
+          });
+        });
+      }
+
+      function clearAllSelections() {
+        document.querySelectorAll('.desktop-item.selected').forEach(el => {
+          el.classList.remove('selected');
+        });
+        document.querySelectorAll('.desktop-item.highlighted').forEach(el => {
+          el.classList.remove('highlighted');
+        });
+      }
+
+      // Clear selection when clicking outside any desktop item
+      document.addEventListener('click', () => {
+        clearAllSelections();
+      });
+
+      // Extend selection box logic to select intersecting items and highlight during drag
+      (function() {
+        const selectionBox = document.getElementById('selectionBox');
+        let startX, startY, currentX, currentY;
+        let isSelecting = false;
+
+        function updateSelectionBox() {
+          const x = Math.min(startX, currentX);
+          const y = Math.min(startY, currentY);
+          const width = Math.abs(startX - currentX);
+          const height = Math.abs(startY - currentY);
+          selectionBox.style.left = x + 'px';
+          selectionBox.style.top = y + 'px';
+          selectionBox.style.width = width + 'px';
+          selectionBox.style.height = height + 'px';
+        }
+
+        function rectsIntersect(r1, r2) {
+          return !(r2.left > r1.right ||
+                   r2.right < r1.left ||
+                   r2.top > r1.bottom ||
+                   r2.bottom < r1.top);
+        }
+
+        document.addEventListener('mousedown', function(e) {
+          if (e.button !== 0) return;
+          isSelecting = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          currentX = startX;
+          currentY = startY;
+          updateSelectionBox();
+          selectionBox.style.display = 'block';
+
+          // Clear previous selections on new drag unless Ctrl/Cmd is pressed
+          if (!e.ctrlKey && !e.metaKey) {
+            clearAllSelections();
+          }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+          if (!isSelecting) return;
+          currentX = e.clientX;
+          currentY = e.clientY;
+          updateSelectionBox();
+
+          const selectionRect = selectionBox.getBoundingClientRect();
+          document.querySelectorAll('.desktop-item').forEach(item => {
+            const itemRect = item.getBoundingClientRect();
+            if (rectsIntersect(selectionRect, itemRect)) {
+              item.classList.add('highlighted');
+            } else {
+              item.classList.remove('highlighted');
+            }
+          });
+        });
+
+        document.addEventListener('mouseup', function(e) {
+          if (!isSelecting) return;
+          isSelecting = false;
+          selectionBox.style.display = 'none';
+
+          const selectionRect = selectionBox.getBoundingClientRect();
+          document.querySelectorAll('.desktop-item').forEach(item => {
+            const itemRect = item.getBoundingClientRect();
+            if (rectsIntersect(selectionRect, itemRect)) {
+              item.classList.add('selected');
+              item.classList.remove('highlighted');
+            } else {
+              item.classList.remove('highlighted');
+            }
+          });
+        });
+      })();
+
+      renderFileSystem('C:\\');
+    </script>
+  
+  </body>
 </html>

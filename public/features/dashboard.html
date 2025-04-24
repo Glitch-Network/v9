@@ -7,15 +7,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        body.dark-mode {
+        .dark-mode {
             background-color: #121212;
             color: #ffffff;
         }
 
         .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
             transition: background-color 0.3s ease;
         }
 
@@ -24,6 +30,10 @@
         }
 
         .dashboard-item {
+            background-color: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
@@ -33,6 +43,9 @@
         }
 
         .dashboard-item h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
             transition: color 0.3s ease;
         }
 
@@ -41,6 +54,8 @@
         }
 
         .time-display {
+            font-size: 2rem;
+            font-weight: bold;
             transition: color 0.3s ease;
         }
 
@@ -48,7 +63,22 @@
             color: #ddd;
         }
 
+        .weather-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .weather-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 0.5rem;
+        }
+
         .weather-temp {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #f87a6a;
             transition: color 0.3s ease;
         }
 
@@ -57,6 +87,8 @@
         }
 
         .weather-desc {
+            font-size: 0.875rem;
+            color: #718096;
             transition: color 0.3s ease;
         }
 
@@ -64,130 +96,114 @@
             color: #bbb;
         }
 
-        .news-item {
-            border-bottom: 1px solid #eee;
-            transition: border-color 0.3s ease;
+        .news-container {
+            grid-column: 1 / -1; /* Make news span across all columns */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .dashboard-item.dark-mode .news-item {
-            border-bottom-color: #555;
+        .news-container.dark-mode {
+            background-color: #2d2d2d;
+            color: #cccccc;
         }
 
-        .news-item h3 {
+        .news-container h2 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
             transition: color 0.3s ease;
         }
 
-        .dashboard-item.dark-mode .news-item h3 {
+        .news-container.dark-mode h2 {
+            color: #eee;
+        }
+
+        .news-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            transition: border-color 0.3s ease;
+        }
+
+        .news-container.dark-mode .news-item {
+            border-bottom-color: #555;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-item h3 {
+            font-size: 1rem;
+            font-weight: medium;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .news-container.dark-mode .news-item h3 a {
             color: #fff;
         }
 
         .news-item p {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-bottom: 0.25rem;
             transition: color 0.3s ease;
         }
 
-        .dashboard-item.dark-mode .news-item p {
+        .news-container.dark-mode .news-item p {
             color: #ccc;
         }
 
         .news-item a {
+            color: #3b82f6;
+            text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .dashboard-item.dark-mode .news-item a {
+        .news-container.dark-mode .news-item a {
             color: #5dade2;
         }
 
-        #dark-mode-toggle {
-            transition: background-color 0.3s ease;
+        .news-item small {
+            color: #a0aec0;
+            transition: color 0.3s ease;
         }
 
-        #dark-mode-toggle:hover {
-            background-color: #555;
+        .news-container.dark-mode .news-item small {
+            color: #bbb;
         }
-
-        /* Improved design for smaller screens */
-        @media (max-width: 640px) {
-            .dashboard-container {
-                padding: 10px;
-            }
-
-            .grid-cols-1 {
-                grid-template-columns: 1fr;
-            }
-
-            .grid-cols-2 {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .grid-cols-3 {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-        }
-		.dashboard-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Three equal columns */
-    gap: 20px; /* Adds space between the grid items */
-    grid-template-rows: auto 1fr; /* Allow the time and weather to take their natural height */
-}
-
-.dashboard-item {
-    background-color: #f7fafc;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.dashboard-item h2 {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.news-container {
-    overflow-y: auto;
-}
-
-@media (max-width: 10068px) {
-    .dashboard-container {
-        grid-template-columns: 1fr; /* Stack them in one column on smaller screens */
-        grid-template-rows: auto auto auto; /* Make all items take their natural height */
-    }
-}
-
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
+<body class="bg-gray-100 dark:bg-gray-900 dark:text-white">
 
-    
-    <div class="dashboard-container flex justify-center items-center min-h-screen py-10">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full px-5">
+    <div class="dashboard-container">
+        <div class="dashboard-item bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+            <h2 class="text-xl font-semibold mb-4">Current Time</h2>
+            <div id="time" class="time-display text-3xl font-bold text-gray-800 dark:text-gray-200"></div>
+        </div>
 
-            <!-- Current Time -->
-            <div class="dashboard-item bg-blue-100 dark:bg-gray-700 rounded-lg shadow-lg p-6 text-center transition-all">
-                <h2 class="text-lg font-semibold mb-4">Current Time</h2>
-                <div id="time" class="time-display text-4xl font-bold text-gray-800 dark:text-gray-200"></div>
-            </div>
-
-            <!-- Weather -->
-            <div class="dashboard-item bg-blue-100 dark:bg-gray-700 rounded-lg shadow-lg p-6 text-center transition-all">
-                <h2 class="text-lg font-semibold mb-4">Weather</h2>
-                <img id="weather-icon" src="" alt="Weather Icon" class="mx-auto mb-4 w-16 h-16">
+        <div class="dashboard-item bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+            <h2 class="text-xl font-semibold mb-4">Weather</h2>
+            <div class="weather-info">
+                <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon">
                 <div id="weather-temp" class="weather-temp text-xl text-red-500 dark:text-red-400"></div>
                 <div id="weather-desc" class="weather-desc text-sm text-gray-600 dark:text-gray-400"></div>
             </div>
-
         </div>
-		
+
+        <div id="news-container" class="news-container dark:bg-gray-800 dark:text-white">
+            <h2 class="text-xl font-semibold mb-4">World News</h2>
+            </div>
     </div>
-            <div id="news-container" class="news-container space-y-4">
-    <h2>World News</h2>
-</div>
 
     <script>
         const body = document.body;
         const dashboardContainer = document.querySelector('.dashboard-container');
         const dashboardItems = document.querySelectorAll('.dashboard-item');
+        const newsContainer = document.getElementById('news-container');
 
         function updateTime() {
             const now = new Date();
@@ -207,10 +223,10 @@
                     const longitude = position.coords.longitude;
                     fetchWeather(latitude, longitude);
                 }, () => {
-                    fetchWeather(40.7128, -74.0060);
+                    fetchWeather(40.7128, -74.0060); // Default to New York if geolocation fails
                 });
             } else {
-                fetchWeather(40.7128, -74.0060);
+                fetchWeather(40.7128, -74.0060); // Default if geolocation is not supported
             }
         }
 
@@ -235,38 +251,26 @@
                 console.error('Error fetching weather data:', error);
                 document.getElementById('weather-temp').textContent = 'Error';
                 document.getElementById('weather-desc').textContent = 'Could not load weather data.';
+                document.getElementById('weather-icon').src = ''; // Clear error icon
             }
         }
 
         function getWeatherIcon(weatherCode) {
-            const iconBaseUrl = "/assets/weather/";
+            const iconBaseUrl = "assets/weather/";
             switch (weatherCode) {
-                case 0:
-                    return `${iconBaseUrl}day.svg`;
-                case 1: case 2: case 3:
-                    return `${iconBaseUrl}cloudy-day-2.svg`;
-                case 45: case 48:
-                    return `${iconBaseUrl}cloudy.svg`;
-                case 51: case 53: case 55:
-                    return `${iconBaseUrl}rainy-1.svg`;
-                case 56: case 57:
-                    return `${iconBaseUrl}snowy-1.svg`;
-                case 61: case 63: case 65:
-                    return `${iconBaseUrl}rainy-2.svg`;
-                case 66: case 67:
-                    return `${iconBaseUrl}snowy-2.svg`;
-                case 71: case 73: case 75:
-                    return `${iconBaseUrl}snowy-3.svg`;
-                case 77:
-                    return `${iconBaseUrl}snowy-4.svg`;
-                case 80: case 81: case 82:
-                    return `${iconBaseUrl}rainy-3.svg`;
-                case 85: case 86:
-                    return `${iconBaseUrl}snowy-5.svg`;
-                case 95 : case 96: case 99:
-                    return `${iconBaseUrl}thunder.svg`;
-                default:
-                    return `${iconBaseUrl}cloudy-day-2.svg`;
+                case 0: return `${iconBaseUrl}day.svg`;
+                case 1: case 2: case 3: return `${iconBaseUrl}cloudy-day-2.svg`;
+                case 45: case 48: return `${iconBaseUrl}cloudy.svg`;
+                case 51: case 53: case 55: return `${iconBaseUrl}rainy-1.svg`;
+                case 56: case 57: return `${iconBaseUrl}snowy-1.svg`;
+                case 61: case 63: case 65: return `${iconBaseUrl}rainy-2.svg`;
+                case 66: case 67: return `${iconBaseUrl}snowy-2.svg`;
+                case 71: case 73: case 75: return `${iconBaseUrl}snowy-3.svg`;
+                case 77: return `${iconBaseUrl}snowy-4.svg`;
+                case 80: case 81: case 82: return `${iconBaseUrl}rainy-3.svg`;
+                case 85: case 86: return `${iconBaseUrl}snowy-5.svg`;
+                case 95 : case 96: case 99: return `${iconBaseUrl}thunder.svg`;
+                default: return `${iconBaseUrl}cloudy-day-2.svg`;
             }
         }
 
@@ -305,7 +309,6 @@
         }
 
         async function fetchNews() {
-            const newsContainer = document.getElementById('news-container');
             const newsApiUrls = ['https://saurav.tech/NewsAPI/everything/fox-news.json','https://saurav.tech/NewsAPI/everything/cnn.json','https://saurav.tech/NewsAPI/everything/bbc-news.json'];
             let allArticles = [];
 
@@ -323,6 +326,7 @@
                 }
             }
 
+            // Basic shuffling to show variety
             shuffleArray(allArticles);
 
             function shuffleArray(array) {
@@ -333,10 +337,10 @@
             }
 
             if (allArticles.length > 0) {
-                newsContainer.innerHTML = ''; // Clear previous content
+                newsContainer.innerHTML = '<h2 class="text-xl font-semibold mb-4">World News</h2>'; // Re-add the title
                 allArticles.slice(0, 5).forEach(article => {
                     const newsItemDiv = document.createElement('div');
-                    newsItemDiv.classList.add('news-item', 'p-4', 'text-sm');
+                    newsItemDiv.classList.add('news-item', 'p-2');
                     newsItemDiv.innerHTML = `
                         <h3 class="font-semibold text-gray-800 dark:text-white"><a href="../launch.html?url=${article.url}">${article.title}</a></h3>
                         <p class="text-gray-600 dark:text-gray-400">${article.description || 'No description available'}</p>
@@ -345,7 +349,7 @@
                     newsContainer.appendChild(newsItemDiv);
                 });
             } else {
-                newsContainer.innerHTML = '<p>Could not load news data from any sources.</p>';
+                newsContainer.innerHTML = '<h2 class="text-xl font-semibold mb-4">World News</h2><p>Could not load news data from any sources.</p>';
             }
         }
 

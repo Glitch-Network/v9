@@ -1,165 +1,471 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Settings</title>
-<style>
-  body {
-    font-family: sans-serif;
-    background-color: #1e1e1e; /* Dark background */
-    color: #f0f0f0; /* Light text color */
-    padding: 20px;
-  }
-  .settings-container {
-    max-width: 600px;
-    margin: auto;
-    background-color: #2e2e2e; /* Slightly lighter container background */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Light shadow for dark mode */
-  }
-  .setting-section {
-    margin-bottom: 20px;
-  }
-  .setting-section h3 {
-    margin-top: 0;
-    border-bottom: 1px solid #555; /* Lighter border for dark mode */
-    padding-bottom: 5px;
-    color: #f0f0f0; /* Light text color for headings */
-  }
-  .setting-item {
-    margin-bottom: 10px;
-  }
-  .setting-item label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #f0f0f0; /* Light text color for labels */
-  }
-  .setting-item input[type="range"] {
-    width: 100%;
-    background-color: #444; /* Darker background for range input */
-    color: #f0f0f0;
-  }
-  .setting-item select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #555; /* Darker border for select */
-    background-color: #333; /* Darker background for select */
-    color: #f0f0f0; /* Light text color for select */
-  }
-  .setting-item input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #555; /* Darker border for file input */
-    background-color: #333; /* Darker background for file input */
-    color: #f0f0f0; /* Light text color for file input */
-  }
-  .setting-item button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    background-color: #555; /* Medium dark button background */
-    color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .setting-item button:hover {
-    background-color: #777; /* Lighter button background on hover */
-  }
-  .setting-item button:active {
-    background-color: #444; /* Darker button background on active */
-  }
-  .setting-item button:disabled {
-    background-color: #333;
-    color: #999;
-    cursor: default;
-  }
-  .setting-item input[type="checkbox"],
-  .setting-item input[type="radio"] {
-    margin-right: 5px;
-  }
-  .setting-item input[type="checkbox"]:focus,
-  .setting-item input[type="radio"]:focus,
-  .setting-item input[type="range"]:focus,
-  .setting-item select:focus,
-  .setting-item input[type="file"]:focus,
-  .setting-item button:focus {
-    outline: 2px solid #77aaff; /* Focus outline color */
-    outline-offset: 1px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glitch Settings</title>
+  <style>
+    :root {
+      --bg-primary: #121212;
+      --bg-secondary: #1e1e1e;
+      --bg-tertiary: #2a2a2a;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --accent-primary: #bb86fc;
+      --accent-secondary: #03dac5;
+      --border-radius: 8px;
+      --transition: 0.3s ease;
+      --font-size-base: 16px;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+      font-size: var(--font-size-base);
+      transition: background-color 0.3s ease, color 0.3s ease, font-size 0.3s ease;
+    }
+
+    body.light-mode {
+      --bg-primary: #f0f0f0;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e0e0e0;
+      --text-primary: #121212;
+      --text-secondary: #555555;
+      --accent-primary: #6200ee;
+      --accent-secondary: #018786;
+    }
+
+    .settings-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-secondary);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease;
+    }
+
+    body.light-mode .settings-container {
+      background-color: var(--bg-secondary);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .settings-header {
+      padding: 20px;
+      background-color: var(--bg-tertiary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    body.light-mode .settings-header {
+      background-color: var(--bg-tertiary);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .settings-header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: var(--accent-primary);
+    }
+
+    .settings-header p {
+      margin: 5px 0 0;
+      color: var(--text-secondary);
+    }
+
+    .settings-sections {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+    }
+
+    .settings-sidebar {
+      background-color: var(--bg-tertiary);
+      padding: 20px 0;
+      transition: background-color 0.3s ease;
+    }
+
+    body.light-mode .settings-sidebar {
+      background-color: var(--bg-tertiary);
+    }
+
+    .settings-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .settings-nav li {
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .settings-nav li:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .settings-nav li.active {
+      background-color: var(--accent-primary);
+      color: white;
+    }
+
+    .settings-content {
+      padding: 20px;
+    }
+
+    .settings-section {
+      display: none;
+    }
+
+    .settings-section.active {
+      display: block;
+    }
+
+    .setting-group {
+      margin-bottom: 25px;
+    }
+
+    .setting-group h3 {
+      margin-top: 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--accent-secondary);
+    }
+
+    body.light-mode .setting-group h3 {
+      border-bottom-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .setting-item {
+      margin-bottom: 15px;
+    }
+
+    .setting-item label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .setting-item input[type='text'],
+    .setting-item input[type='number'],
+    .setting-item select {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--border-radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    body.light-mode .setting-item input[type='text'],
+    body.light-mode .setting-item input[type='number'],
+    body.light-mode .setting-item select {
+      border-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .setting-item input[type='checkbox'] {
+      margin-right: 10px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    .preview-container {
+      width: 100%;
+      height: 200px;
+      border-radius: var(--border-radius);
+      background-color: var(--bg-tertiary);
+      background-size: cover;
+      background-position: center;
+      margin-top: 10px;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      transition: background-image 0.5s ease;
+    }
+
+    @media (max-width: 768px) {
+      .settings-sections {
+        grid-template-columns: 1fr;
+      }
+      .settings-sidebar {
+        display: none;
+      }
+    }
+
+    .font-size-slider {
+      width: 100%;
+    }
+
+    .reset-button {
+      background-color: var(--accent-primary);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+      user-select: none;
+    }
+
+    .reset-button:hover {
+      background-color: var(--accent-secondary);
+    }
+  </style>
 </head>
 <body>
+  <div class="settings-container">
+    <div class="settings-header">
+      <h1>Glitch Settings</h1>
+      <p>Customize your experience</p>
+    </div>
 
-<div class="settings-container">
-  <div class="setting-section">
-    <h3>Wallpaper</h3>
-    <div class="setting-item">
-      <label for="defaultWallpaper">Default Wallpapers ( actually horrible, please use your own )</label>
-      <select id="defaultWallpaper">
-        
-        <option value="default">Default</option>
-        <option value="cow">Cow</option>
-        <option value="babyoil">Baby Oil</option>
-        <option value="crit_rip">FBI logo</option>
-      </select>
-    </div>
-    <div class="setting-item">
-      <label for="uploadWallpaper">Upload Wallpaper</label>
-      <input type="file" id="uploadWallpaper" accept="image/*">
-    </div>
-    <div class="setting-item">
-      <label>Preview</label>
-      <div id="wallpaperPreview" style="width: 200px; height: 100px; border: 1px solid #555; margin-top: 10px;"></div>
+    <div class="settings-sections">
+      <div class="settings-sidebar">
+        <ul class="settings-nav">
+          <li class="active" data-section="appearance">Appearance</li>
+          <li data-section="privacy">Privacy</li>
+          <li data-section="about">About</li>
+        </ul>
+      </div>
+
+      <div class="settings-content">
+        <!-- Appearance Section -->
+        <div class="settings-section active" id="appearance">
+          <div class="setting-group">
+            <h3>Theme</h3>
+            <div class="setting-item">
+              <label for="darkModeToggle">
+                <input type="checkbox" id="darkModeToggle" />
+                Dark Mode
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>Font Size</h3>
+            <div class="setting-item">
+              <label for="fontSizeRange">Adjust font size</label>
+              <input
+                type="range"
+                min="12"
+                max="24"
+                value="16"
+                id="fontSizeRange"
+                class="font-size-slider"
+                aria-label="Font Size Slider"
+              />
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>Wallpaper</h3>
+            <div class="setting-item">
+              <label for="wallpaperSelect">Select Wallpaper</label>
+              <select id="wallpaperSelect" aria-label="Select Wallpaper">
+                <option value="default">Default</option>
+                <option value="cow">Cow</option>
+                <option value="diddy">Diddy</option>
+                <option value="fbi">FBI Logo</option>
+              </select>
+            </div>
+
+            <div class="setting-item">
+              <label for="wallpaperUpload">Upload Custom Wallpaper</label>
+              <input
+                type="file"
+                id="wallpaperUpload"
+                accept="image/*"
+                aria-label="Upload Custom Wallpaper"
+              />
+            </div>
+
+            <div
+              class="preview-container"
+              id="wallpaperPreview"
+              role="img"
+              aria-label="Wallpaper preview"
+            ></div>
+          </div>
+
+          <button class="reset-button" id="resetSettingsBtn" aria-label="Reset Settings">
+            Reset Settings
+          </button>
+        </div>
+
+        <!-- Privacy Section -->
+        <div class="settings-section" id="privacy">
+          <div class="setting-group">
+            <h3>Privacy Settings</h3>
+            <div class="setting-item">
+              <label for="trackingToggle">
+                <input type="checkbox" id="trackingToggle" />
+                Enable Analytics
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="settings-section" id="about">
+          <div class="setting-group">
+            <h3>About Glitch</h3>
+            <p>Version: 1.0.0</p>
+            <p>Created with ❤️ by the Glitch team</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  const defaultWallpaperSelect = document.getElementById('defaultWallpaper');
-  const uploadWallpaperInput = document.getElementById('uploadWallpaper');
-  const wallpaperPreview = document.getElementById('wallpaperPreview');
-
-  // Function to set wallpaper (for preview and actual background)
-  function setWallpaper(base64Image) {
-    wallpaperPreview.style.backgroundImage = `url(${base64Image})`;
-    wallpaperPreview.style.backgroundSize = 'cover';
-    localStorage.setItem('wallpaper', base64Image);
-  }
-
-  // Load saved wallpaper on settings page load
-  const savedWallpaper = localStorage.getItem('wallpaper');
-  if (savedWallpaper) {
-    setWallpaper(savedWallpaper);
-  }
-
-  defaultWallpaperSelect.addEventListener('change', () => {
-    const wallpaperMap = {
-      "default": 'wallpaper.webp',
-      'crit_rip': 'fbi_logo_favi_april_fools.png',
-      'babyoil': 'diddy.webp',
-      'cow': 'cow.jpg'
-    };
-
-    const selectedWallpaper = defaultWallpaperSelect.value;
-    const imageName = wallpaperMap[selectedWallpaper];
-    const imageUrl = `assets/images/${imageName}`; // Construct image path
-    setWallpaper(imageUrl);
-  });
-
-  uploadWallpaperInput.addEventListener('change', () => {
-    const file = uploadWallpaperInput.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        setWallpaper(e.target.result);
-      }
-      reader.readAsDataURL(file);
-    }
-  });
-</script>
+  <script>
+    // Tab switching
+    document.querySelectorAll('.settings-nav li').forEach((item) => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.settings-nav li').forEach((li) => li.classList.remove('active'));
+        document.querySelectorAll('.settings-section').forEach((section) => {
+          section.classList.remove('active');
+        
+        
+            });
     
+  
+        
+
+        item.classList.add('active');
+        const targetSection = document.getElementById(item.dataset.section);
+        if (targetSection) {
+          targetSection.classList.add('active');
+        }
+      });
+    });
+
+
+    // Wallpaper handling
+    const wallpaperSelect = document.getElementById('wallpaperSelect');
+    const wallpaperUpload = document.getElementById('wallpaperUpload');
+    const wallpaperPreview = document.getElementById('wallpaperPreview');
+
+    // Font size slider
+    const fontSizeRange = document.getElementById('fontSizeRange');
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+
+    // Privacy toggle
+    const trackingToggle = document.getElementById('trackingToggle');
+
+    // Reset button
+    const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+
+    // Load saved settings or set defaults
+    function loadSettings() {
+      const savedWallpaper = localStorage.getItem('wallpaper') || 'assets/images/wallpaper.webp';
+      wallpaperPreview.style.backgroundImage = `url(${savedWallpaper})`;
+
+      const wallpaperKeys = {
+        'assets/images/wallpaper.webp': 'default',
+        'assets/images/cow.jpg': 'cow',
+        'assets/images/diddy.webp': 'diddy',
+        'assets/images/fbi_logo_favi_april_fools.png': 'fbi',
+      };
+
+      wallpaperSelect.value = wallpaperKeys[localStorage.getItem('wallpaper')] || 'default';
+
+      const savedDarkMode = localStorage.getItem('darkMode');
+      if (savedDarkMode === 'true') {
+        darkModeToggle.checked = true;
+        document.body.classList.add('dark-mode');
+        wallpaperPreview.style.backgroundImage = `url('assets/images/darkmode.png')`;
+      } else {
+        darkModeToggle.checked = false;
+        document.body.classList.remove('dark-mode');
+        const savedWallpaper = localStorage.getItem('wallpaper') || 'assets/images/wallpaper.webp';
+        wallpaperPreview.style.backgroundImage = `url(${savedWallpaper})`;
+      }
+
+      const savedFontSize = localStorage.getItem('fontSize') || '16';
+      fontSizeRange.value = savedFontSize;
+      document.body.style.fontSize = `${savedFontSize}px`;
+
+      const savedTracking = localStorage.getItem('enableTracking') === 'true';
+      trackingToggle.checked = savedTracking;
+    }
+
+    // Save wallpaper selection
+    wallpaperSelect.addEventListener('change', () => {
+      const wallpapers = {
+        default: 'assets/images/wallpaper.webp',
+        cow: 'assets/images/cow.jpg',
+        diddy: 'assets/images/diddy.webp',
+        fbi: 'assets/images/fbi_logo_favi_april_fools.png',
+      };
+
+      const selected = wallpaperSelect.value;
+      wallpaperPreview.style.backgroundImage = `url(${wallpapers[selected]})`;
+      localStorage.setItem('wallpaper', wallpapers[selected]);
+    });
+
+    // Upload custom wallpaper
+    wallpaperUpload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          wallpaperPreview.style.backgroundImage = `url(${event.target.result})`;
+          localStorage.setItem('wallpaper', event.target.result);
+          wallpaperSelect.value = '';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Dark mode toggle handler
+    darkModeToggle.addEventListener('change', () => {
+      if (darkModeToggle.checked) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkMode', 'true');
+        wallpaperPreview.style.backgroundImage = `url('assets/images/darkmode.png')`;
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('darkMode', 'false');
+        const savedWallpaper = localStorage.getItem('wallpaper') || 'assets/images/wallpaper.webp';
+        wallpaperPreview.style.backgroundImage = `url(${savedWallpaper})`;
+      }
+    });
+
+    // Font size slider handler
+    fontSizeRange.addEventListener('input', () => {
+      const size = fontSizeRange.value;
+      document.body.style.fontSize = `${size}px`;
+      localStorage.setItem('fontSize', size);
+    });
+
+    // Tracking toggle handler
+    trackingToggle.addEventListener('change', () => {
+      localStorage.setItem('enableTracking', trackingToggle.checked.toString());
+    });
+
+    // Reset settings button handler
+    resetSettingsBtn.addEventListener('click', () => {
+      localStorage.removeItem('wallpaper');
+      localStorage.removeItem('darkMode');
+      localStorage.removeItem('fontSize');
+      localStorage.removeItem('enableTracking');
+      loadSettings();
+    });
+
+    // Initialize settings on load
+    loadSettings();
+  </script>
 </body>
 </html>

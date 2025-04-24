@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glitch – Contributors</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png"/>
+  <link rel="stylesheet" href="stars.css"/>
+  
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-278K4F012J"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-278K4F012J');
+  </script>
+  
+  <!-- Register the service worker -->
+  <script src="register-sw.js" defer></script>
+
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    header {
+      text-align: center;
+      padding: 30px 20px;
+      width: 100%;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+    
+    main {
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    /* Contributor List Styles */
+    .contributors-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+
+    .contributor {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .contributor:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .contributor img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.2);
+    }
+
+    .contributor h2 {
+      margin: 0;
+      margin-bottom: 5px;
+      font-size: 1.3rem;
+    }
+
+    /* Honorable Mention */
+    .honorable-title {
+      color: gold;
+      text-decoration: underline;
+      text-shadow: 0 0 10px gold;
+      margin: 50px 0 20px;
+      font-size: 1.8rem;
+    }
+
+    /* Memorial Section */
+    .memorial {
+      background: linear-gradient(145deg, rgba(0, 0, 0, 0.7), rgba(255, 215, 0, 0.3));
+      padding: 40px;
+      border-radius: 20px;
+      margin: 50px auto;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+      width: 90%;
+      max-width: 800px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .memorial::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, transparent 60%, rgba(255,215,0,0.1) 100%);
+      animation: rotate 20s linear infinite;
+      z-index: -1;
+    }
+
+    .memorial h2 {
+      color: gold;
+      font-size: 2.5rem;
+      text-shadow: 0 0 15px gold;
+      margin-bottom: 15px;
+      animation: glow 2s infinite alternate;
+    }
+
+    .memorial p {
+      color: lightgray;
+      font-size: 1.3rem;
+      font-style: italic;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .memorial img {
+      width: 250px;
+      height: auto;
+      border-radius: 15px;
+      margin-top: 25px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Animations */
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px gold, 0 0 20px gold;
+      }
+      to {
+        text-shadow: 0 0 20px gold, 0 0 40px gold;
+      }
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Footer Link Styles */
+    footer {
+      margin: 40px 0;
+      padding: 20px;
+    }
+    
+    footer h2 a {
+      color: #4fc3f7;
+      font-size: 1.3rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: rgba(79, 195, 247, 0.1);
+    }
+    
+    footer h2 a:hover {
+      color: white;
+      background: rgba(79, 195, 247, 0.3);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Our Contributors</h1>
+    <p>The amazing people who make this project possible</p>
+  </header>
+
+  <main>
+    <section class="contributors-container">
+      <!-- Primary Contributor -->
+      <div class="contributor">
+        <img src="assets/images/minion.png" alt="Minionfan105"/>
+        <h2>Minionfan105</h2>
+      </div>
+    </section>
+
+    <!-- Honorable Mention -->
+    <h2 class="honorable-title">Honorable Mention</h2>
+    <section class="contributors-container">
+      <div class="contributor">
+        <img src="assets/images/infamy.png" alt="Infamy / Enterheadlines"/>
+        <h2>Infamy / Enterheadlines</h2>
+      </div>
+    </section>
+
+    <!-- Memorial Section -->
+    <section class="memorial">
+      <h2>Ok_criticism</h2>
+      <p>The god of being 𝓯𝓻𝓮𝓪𝓴𝔂 (and funny). Rest in peace lad.</p>
+      <p>??? - 2024</p>
+      <img src="assets/images/crit.png" alt="Ok_criticism"/>
+    </section>
+  </main>
+
+  <footer>
+    <h2><a href="./main.html">← Return to Home</a></h2>
+  </footer>
+</body>
+</html>

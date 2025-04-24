@@ -10,66 +10,65 @@
     --brand-color-accent: #03DAC5;       /*  Teal/Cyan -  Highlight/Interactive Accent (Material Design) */
 
     /* Dark Neutral Tones -  Deep & Elegant */
-    --background-color-body: #181818;    /*  Deep Charcoal - Body Background */
-    --background-color-card: #242424;     /*  Darker Grey - Card Background (Slightly Lighter than Body) */
-    --text-color-primary: #EEEEEE;       /*  Off-White - Primary Text (High Contrast) */
-    --text-color-secondary: #B0B0B0;     /*  Medium Grey - Secondary Text, Subtitles (Less Emphasis) */
+    --background-color-body: #121212;    /*  Deep Charcoal - Body Background */
+    --background-color-card: #1E1E1E;     /*  Darker Grey - Card Background (Slightly Lighter than Body) */
+    --text-color-primary: #E0E0E0;       /*  Off-White - Primary Text (High Contrast) */
+    --text-color-secondary: #A0A0A0;     /*  Medium Grey - Secondary Text, Subtitles (Less Emphasis) */
 
     /* UI Elements - Consistent Spacing, Radius, Shadows (Dark Theme Optimized) */
-    --border-radius-base: 12px;          /*  Slightly More Rounded Corners for Dark Theme */
-    --spacing-unit: 16px;               /*  Slightly Increased Base Spacing for Dark Theme Breathing Room */
+    --border-radius-base: 14px;          /*  Slightly More Rounded Corners for Dark Theme */
+    --spacing-unit: 18px;               /*  Slightly Increased Base Spacing for Dark Theme Breathing Room */
     --padding-base: var(--spacing-unit); /*  Standard Padding */
     --margin-base: var(--spacing-unit);  /*  Standard Margin */
 
     /* Shadows -  Subtle Depth (Dark Theme Shadows are often softer) */
-    --box-shadow-light: 0 2px 6px rgba(0,0,0,0.2);   /*  Light Shadow for Cards (Softer for Dark Theme) */
-    --box-shadow-medium: 0 4px 10px rgba(0,0,0,0.3); /*  Medium Shadow for Hover/Focus (Softer for Dark Theme) */
-    --box-shadow-hover: 0 6px 15px rgba(0,0,0,0.35); /*  Slightly Deeper Shadow on Hover (Softer for Dark Theme) */
+    --box-shadow-light: 0 3px 8px rgba(0,0,0,0.25);   /*  Light Shadow for Cards (Softer for Dark Theme) */
+    --box-shadow-medium: 0 6px 15px rgba(0,0,0,0.4); /*  Medium Shadow for Hover/Focus (Softer for Dark Theme) */
+    --box-shadow-hover: 0 8px 20px rgba(0,0,0,0.5); /*  Slightly Deeper Shadow on Hover (Softer for Dark Theme) */
 
     /* Transition - Smooth Interactions (Consistent) */
-    --transition-duration: 0.25s;        /*  Slightly Longer Transition Duration for Dark Theme */
-    --transition-easing: ease-in-out;    /*  Smooth Ease-in-out for Dark Theme */
+    --transition-duration: 0.3s;        /*  Slightly Longer Transition Duration for Dark Theme */
+    --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);    /*  Smooth Ease-in-out for Dark Theme */
 }
-
 
 /* -------------------------------------------------- */
 /* ✨ Base Styles - Body and Main Container (Dark Mode Optimized) ✨ */
 /* -------------------------------------------------- */
 body {
-    font-family: sans-serif; /*  System Font Stack or specify preferred font */
-    background-color: var(--background-color-body); /* Dark Body Background */
-    color: var(--text-color-primary);             /* Light Primary Text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color-body);
+    color: var(--text-color-primary);
     margin: 0;
     padding: 0;
-    line-height: 1.7;                             /* Slightly Increased Line Height for Dark Theme Readability */
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 .main {
     position: relative;
-    top: calc(var(--toolbar-top, 0) + 160px);     /* Adjusted top spacing for dark theme, slightly more space */
+    /* Removed top offset to prevent clipping */
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: calc(var(--padding-base) * 1.2);      /* Slightly Increased Padding for Content Area */
+    padding: calc(var(--padding-base) * 1.2);
+    padding-top: calc(var(--padding-base) * 5);
 }
 
-
 /* -------------------------------------------------- */
-/* ✨ Search Bar -  Elevated and Focused Design (Dark Mode) ✨ */
+/* ✨ Search Bar - Elevated and Focused Design (Dark Mode) ✨ */
 /* -------------------------------------------------- */
 #search {
     width: 100%;
-    max-width: 500px;                               /* Increased Max Width for Dark Theme - More Prominent Search */
-    height: 55px;                                  /* Increased Height for Dark Theme Visibility */
+    max-width: 520px;
+    height: 56px;
     border: none;
-    background-color: var(--background-color-card); /* Dark Card Background for Search */
-    color: var(--text-color-primary);             /* Light Text Color for Search Input */
-    font-size: 1.1rem;                             /* Slightly Larger Font Size for Dark Theme Readability */
-    padding: 0 calc(var(--padding-base) * 1.8);     /* Increased Horizontal Padding for Dark Theme */
-    border-radius: calc(var(--border-radius-base) * 1.5); /* More Rounded Corners - Pill Shape for Dark Theme */
-    box-shadow: var(--box-shadow-medium);           /* Medium Shadow - Dark Theme Optimized */
+    background-color: var(--background-color-card);
+    color: var(--text-color-primary);
+    font-size: 1.2rem;
+    padding: 0 calc(var(--padding-base) * 1.8);
+    border-radius: calc(var(--border-radius-base) * 1.5);
+    box-shadow: var(--box-shadow-medium);
     transition: box-shadow var(--transition-duration) var(--transition-easing),
                 transform var(--transition-duration) var(--transition-easing);
     outline: none;
@@ -79,40 +78,38 @@ body {
 }
 
 #search::placeholder {
-    color: var(--text-color-secondary);             /* Grey Placeholder Text */
-    opacity: 0.8;                                 /* Slightly Less Opaque Placeholder */
+    color: var(--text-color-secondary);
+    opacity: 0.75;
 }
 
 #search:focus {
-    box-shadow: var(--box-shadow-hover);             /* Deeper Shadow on Focus - Dark Theme Optimized */
-    transform: translateY(-4px);                    /* Slightly More Pronounced Lift on Focus for Dark Theme */
-    border-color: var(--brand-color-accent);         /* Accent Border on Focus (Teal - Material Design) */
+    box-shadow: var(--box-shadow-hover);
+    transform: translateY(-4px);
+    border-color: var(--brand-color-accent);
 }
 
-
 /* -------------------------------------------------- */
-/* ✨ App Grid -  Flexible and Spaced Layout (Dark Mode) ✨ */
+/* ✨ App Grid - Flexible and Spaced Layout (Dark Mode) ✨ */
 /* -------------------------------------------------- */
 #apps {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: calc(var(--margin-base) * 2.5);     /* Increased Top Margin for Dark Theme Spacing */
-    max-width: 1400px;                               /* Increased Max Width for Dark Theme Layout */
+    margin-top: calc(var(--margin-base) * 3);
+    max-width: 1440px;
     padding: 0;
 }
 
-
 /* -------------------------------------------------- */
-/* ✨ App Card -  Modern and Interactive Styling (Dark Mode) ✨ */
+/* ✨ App Card - Modern and Interactive Styling (Dark Mode) ✨ */
 /* -------------------------------------------------- */
 #app {
-    width: 240px;                                  /* Slightly Wider Cards for Dark Theme - Visual Presence */
+    width: 250px;
     margin: var(--margin-base);
-    padding: calc(var(--padding-base) * 1.4);      /* Increased Padding Inside Cards for Dark Theme */
-    background-color: var(--background-color-card); /* Dark Card Background */
+    padding: calc(var(--padding-base) * 1.5);
+    background-color: var(--background-color-card);
     border-radius: var(--border-radius-base);
-    box-shadow: var(--box-shadow-light);           /* Light Shadow - Dark Theme Optimized */
+    box-shadow: var(--box-shadow-light);
     transition: transform var(--transition-duration) var(--transition-easing),
                 box-shadow var(--transition-duration) var(--transition-easing);
     text-align: center;
@@ -121,97 +118,90 @@ body {
 }
 
 #app:hover {
-    transform: translateY(-10px);                   /* Lift on Hover - Consistent */
-    box-shadow: var(--box-shadow-hover);           /* Deeper Shadow on Hover - Dark Theme Optimized */
-    background-color: #2e2e2e;                      /* Slightly Lighter Background on Hover for Dark Theme Interaction */
+    transform: translateY(-12px);
+    box-shadow: var(--box-shadow-hover);
+    background-color: #2c2c2c;
 }
 
 #app:active {
-    transform: translateY(-2px);                   /* Less Lift when Active/Clicked - Consistent */
-    box-shadow: var(--box-shadow-medium);           /* Medium Shadow when Active - Dark Theme Optimized */
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow-medium);
 }
-
 
 /* App title (Dark Mode) */
 #app div {
     font-weight: 600;
-    font-size: 1.15rem;                            /* Slightly Larger Title for Dark Theme Readability */
-    margin-top: calc(var(--margin-base) * 0.9);     /* Adjusted Title Margin for Dark Theme */
-    color: var(--text-color-primary);             /* Light Primary Text Color */
+    font-size: 1.2rem;
+    margin-top: calc(var(--margin-base) * 0.9);
+    color: var(--text-color-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 var(--padding-base);
 }
 
-
-/* App images -  Improved Display (Dark Mode) */
+/* App images - Improved Display (Dark Mode) */
 #app img {
     width: 100%;
     height: auto;
-    border-radius: calc(var(--border-radius-base) * 0.7); /* Slightly More Rounded Image Corners for Dark Theme Cards */
+    border-radius: calc(var(--border-radius-base) * 0.7);
     display: block;
     object-fit: cover;
-    margin-bottom: calc(var(--margin-base) * 0.6);     /* Adjusted Margin Below Image for Dark Theme Spacing */
+    margin-bottom: calc(var(--margin-base) * 0.6);
     transition: transform var(--transition-duration) var(--transition-easing);
-    opacity: 0.95;                                  /* Slightly Less Opaque Images in Dark Theme - Subtle Visual Lift */
+    opacity: 0.95;
 }
 
 #app:hover img {
-    transform: scale(1.04);                         /* Subtle Image Zoom on Hover - Dark Theme Optimized */
-    opacity: 1;                                     /* Full Opacity on Hover */
+    transform: scale(1.05);
+    opacity: 1;
 }
-
 
 /* -------------------------------------------------- */
 /* ✨ Responsive Design - Adjust for Smaller Screens (Dark Mode) ✨ */
 /* -------------------------------------------------- */
 @media (max-width: 768px) {
     .main {
-        top: calc(var(--toolbar-top, 0) + 120px);     /* Adjusted Top Spacing for Smaller Screens in Dark Theme */
-        padding: var(--padding-base);                  /* Reset padding for smaller screens */
+        top: 140px;
+        padding: var(--padding-base);
     }
 
     #search {
-        max-width: 95%;                               /* Search Bar Wider on Smaller Screens - Dark Theme Emphasis */
-        height: 50px;                                  /* Consistent Search Bar Height */
+        max-width: 95%;
+        height: 50px;
         font-size: 1rem;
     }
 
     #apps {
-        margin-top: var(--margin-base);               /* Less Top Margin on Smaller Screens */
+        margin-top: var(--margin-base);
     }
 
     #app {
-        width: calc(50% - calc(var(--margin-base) * 2)); /* Two Columns on Smaller Screens - Consistent */
-        max-width: 280px;                               /* Increased Max Width for App Cards on Smaller Screens in Dark Theme */
+        width: calc(50% - calc(var(--margin-base) * 2));
+        max-width: 280px;
         margin: var(--margin-base);
-        padding: calc(var(--padding-base) * 0.9);      /* Slightly Reduced Padding for Smaller Cards on Smaller Screens */
+        padding: calc(var(--padding-base) * 1);
     }
+
     #app div {
         font-size: 1rem;
     }
 }
 
-
 @media (max-width: 500px) {
-
     #app:hover {
-        transform: translateY(0);                     /* Disable Hover Lift on Very Small Screens/Lists */
-        box-shadow: var(--box-shadow-light);         /* Re-add Light Shadow for Hover Differentiation in List - Dark Theme */
-        background-color: #2e2e2e;                    /* Darker Background on Hover in List - Dark Theme */
+        transform: translateY(0);
+        box-shadow: var(--box-shadow-light);
+        background-color: #2c2c2c;
     }
     #app {
-        width: 240px; /* Slightly wider cards */
-        /* ... other existing styles ... */
-        height: 320px; /* ADD THIS LINE: Fixed height for all app cards */
-        overflow: hidden; /* Clip content if it exceeds the fixed height */
+        width: 240px;
+        height: 320px;
+        overflow: hidden;
     }
-    
-    /*  Optional: Adjust image height to fit nicely within the fixed card height */
     #app img {
         width: 100%;
-        height: 60%; /* Adjust percentage as needed to control image height within the fixed card height */
+        height: 60%;
         border-radius: calc(var(--border-radius-base) * 0.7);
         display: block;
         object-fit: cover;
@@ -225,4 +215,194 @@ body {
         padding-left: var(--padding-base);
         text-align: left;
     }
+}
+:root {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --accent: #bb86fc;
+    --border-radius: 12px;
+    --transition: 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    padding: 2rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+#search {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+    border: var(--bg-secondary) 2px solid;
+    border-radius: var(--border-radius);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: var(--transition);
+}
+
+#search:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.3);
+}
+ 
+#apps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: 150px;
+    padding: var(--spacing-unit);
+    box-sizing: border-box;
+}
+ 
+.app {
+    background: var(--background-color-card);
+    border-radius: var(--border-radius-base);
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: transform var(--transition-duration) var(--transition-easing), box-shadow var(--transition-duration) var(--transition-easing), background-color var(--transition-duration) var(--transition-easing);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: var(--box-shadow-light);
+    height: 180px;
+    justify-content: center;
+    text-align: center;
+}
+
+.app a {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.app-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    background: rgba(255,255,255,0.08);
+    box-shadow: var(--box-shadow-hover);
+}
+ 
+.app-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    background: var(--background-color-body);
+    padding: 0.6rem;
+    box-shadow: var(--box-shadow-medium);
+    transition: box-shadow var(--transition-duration) var(--transition-easing);
+}
+ 
+.app-icon:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+ 
+.app-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color-primary);
+    margin: 0;
+    line-height: 1.2;
+    user-select: none;
+}
+ 
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .apps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: var(--spacing-unit);
+    }
+}
+/* Style for search and category filter container */
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+/* Style for search input */
+#search {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: var(--border-radius-base);
+  border: none;
+  width: 250px;
+  background-color: var(--background-color-card);
+  color: var(--text-color-primary);
+  box-shadow: var(--box-shadow-light);
+  transition: box-shadow var(--transition-duration) var(--transition-easing);
+}
+
+#search:focus {
+  outline: none;
+  box-shadow: var(--box-shadow-medium);
+}
+
+/* Style for category select */
+#categorySelect {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: var(--border-radius-base);
+  border: none;
+  background-color: var(--background-color-card);
+  color: var(--text-color-primary);
+  box-shadow: var(--box-shadow-light);
+  cursor: pointer;
+  transition: box-shadow var(--transition-duration) var(--transition-easing);
+  min-width: 180px;
+  padding: 25px;
+}
+
+#categorySelect:hover,
+#categorySelect:focus {
+  box-shadow: var(--box-shadow-medium);
+  outline: none;
 }

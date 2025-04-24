@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>File Explorer</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      background: #1e1e1e;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+    #file-list {
+      flex-grow: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      overflow-y: auto;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+    .desktop-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80px;
+      cursor: pointer;
+      user-select: none;
+      padding: 5px;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+      color: white;
+    }
+    .desktop-item.selected,
+    .desktop-item.highlighted {
+      background-color: rgba(74, 144, 226, 0.5);
+    }
+    #trash-bin {
+      width: 80px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      padding: 5px;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+    #trash-bin img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+    #trash-bin.drag-over {
+      background-color: rgba(74, 144, 226, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div id="file-list"></div>
+  <script type="module">
+    import { ls, deleteItem } from './scripts/js/filesystem.js';
+
+    const fileListDiv = document.getElementById('file-list');
+
+    function renderTrashBin() {
+      const trashBin = document.createElement('div');
+      trashBin.id = 'trash-bin';
+      trashBin.setAttribute('draggable', 'false');
+
+      const img = document.createElement('img');
+      img.src = 'assets/images/trash.png';
+      img.alt = 'Trash Bin';
+
+      const label = document.createElement('span');
+      label.textContent = 'Trash';
+
+      trashBin.appendChild(img);
+      trashBin.appendChild(label);
+
+      trashBin.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        trashBin.classList.add('drag-over');
+      });
+
+      trashBin.addEventListener('dragleave', (e) => {
+        trashBin.classList.remove('drag-over');
+      });
+
+      trashBin.addEventListener('drop', (e) => {
+        e.preventDefault();
+        trashBin.classList.remove('drag-over');
+        const data = e.dataTransfer.getData('text/plain');
+        if (!data) return;
+        try {
+          const { name, isFolder } = JSON.parse(data);
+          const result = deleteItem('C:\\', name);
+          console.log(result);
+          renderFileSystem('C:\\');
+        } catch (err) {
+          console.error('Failed to parse drag data', err);
+        }
+      });
+
+      return trashBin;
+    }
+
+    function renderFileSystem(path) {
+      const rawList = ls(path);
+      if (typeof rawList !== 'string') {
+        fileListDiv.textContent = 'Failed to load directory contents.';
+        return;
+      }
+      const entries = rawList.split('\n').filter(e => e.trim().length > 0);
+      fileListDiv.innerHTML = '';
+      fileListDiv.style.display = 'flex';
+      fileListDiv.style.flexWrap = 'wrap';
+      fileListDiv.style.gap = '15px';
+
+      entries.forEach(entry => {
+        const item = document.createElement('div');
+        item.className = 'desktop-item';
+        item.textContent = entry;
+        item.setAttribute('draggable', 'true');
+        item.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', JSON.stringify({ name: entry, isFolder: entry.endsWith('\\') }));
+        });
+        fileListDiv.appendChild(item);
+      });
+
+      // Append trash bin
+      fileListDiv.appendChild(renderTrashBin());
+    }
+
+    // Initial render of root directory
+    renderFileSystem('C:\\');
+  </script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Real-Time Chat</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .window-header {
+      cursor: default;
+      padding: 8px;
+      background: #913dc2;
+      color: white;
+      font-weight: bold;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      position: relative;
+    }
+    .btn.close {
+      position: absolute;
+      right: 8px;
+      top: 5px;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    form {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    label {
+      font-weight: 600;
+      color: #ddd;
+    }
+    input[type="text"] {
+      padding: 6px 10px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background: #2a2a2a;
+      color: #e0e0e0;
+    }
+    input[type="text"]::placeholder {
+      color: #888;
+    }
+    button[type="submit"] {
+      padding: 6px 12px;
+      background: #913dc2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background: #7a32b8;
+    }
+    #chat-container {
+      flex-grow: 1;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      background: #121212;
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
+    }
+    #chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      color: #ccc;
+    }
+    #chat-form {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #333;
+      background: #1a1a1a;
+    }
+    #chat-input {
+      flex-grow: 1;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      font-size: 14px;
+      background: #2a2a2a;
+      color: #e0e0e0;
+    }
+    #chat-input::placeholder {
+      color: #888;
+    }
+    #chat-form button {
+      margin-left: 8px;
+      background: #913dc2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    #chat-form button:hover {
+      background: #7a32b8;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="nickname-form">
+    <label for="nickname-input">Enter your nickname to join chat:</label>
+    <input type="text" id="nickname-input" placeholder="Nickname" required autocomplete="off" />
+    <button type="submit">Join Chat</button>
+  </form>
+  <div id="chat-container">
+    <div id="chat-messages"></div>
+    <form id="chat-form">
+      <input id="chat-input" autocomplete="off" placeholder="Type a message..." />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const closeBtn = document.getElementById('close-btn');
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        window.close();
+      };
+    }
+    const nicknameForm = document.getElementById('nickname-form');
+    const nicknameInput = document.getElementById('nickname-input');
+    const chatContainer = document.getElementById('chat-container');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+
+    const socket = io();
+
+    let censorWords = [];
+
+    // Fetch filter.txt and split by newline to get censor words
+    fetch('/filter.txt')
+      .then(response => response.text())
+      .then(text => {
+        censorWords = text.split('\n').map(word => word.trim()).filter(word => word.length > 0);
+      })
+      .catch(err => {
+        console.error('Failed to load filter.txt:', err);
+      });
+
+    // Censor function to replace any censor word in the message with asterisks
+    function censorMessage(message) {
+      if (localStorage.getItem("disableChatFilters") === "true") {
+        // Disable censoring if chat filters disabled
+        return message;
+      }
+      if (!censorWords.length) return message;
+      let censored = message;
+      censorWords.forEach(word => {
+        // Create a regex to match whole words case-insensitively
+        const regex = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+        censored = censored.replace(regex, match => '*'.repeat(match.length));
+      });
+      return censored;
+    }
+
+    function appendMessage(msg) {
+      const div = document.createElement('div');
+      let messageToDisplay = msg;
+      if (localStorage.getItem("disableChatFilters") !== "true") {
+        messageToDisplay = censorMessage(msg);
+      }
+      div.textContent = messageToDisplay;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    let nickname = null;
+
+    nicknameForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      nickname = nicknameInput.value.trim();
+      if (nickname === '') return;
+      nicknameForm.style.display = 'none';
+      chatContainer.style.display = 'flex';
+    });
+
+    chatForm.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      if (chatInput.value.trim() !== '' && nickname !== null) {
+        let messageToSend = chatInput.value.trim();
+        if (localStorage.getItem("disableChatFilters") !== "true") {
+          messageToSend = censorMessage(messageToSend);
+        }
+        socket.emit('chat message', nickname + ': ' + messageToSend);
+        chatInput.value = '';
+      }
+    });
+
+    socket.on('chat message', (msg) => {
+      appendMessage(msg);
+    });
+  </script>
+</body>
+</html>
