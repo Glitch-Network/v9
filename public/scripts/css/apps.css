@@ -1,0 +1,408 @@
+/* ✨✨  DARK MODE - REFINED APP LAUNCHER STYLES ✨✨ */
+
+/* -------------------------------------------------- */
+/* ✨ Root Variables - DARK THEME CUSTOMIZATION ✨ */
+/* -------------------------------------------------- */
+:root {
+    /*  Dark Theme Color Palette - Sophisticated & Modern */
+    --brand-color-primary: #BB86FC;      /*  Purple -  Vibrant Primary Accent (Material Design Inspired) */
+    --brand-color-secondary: #3700B3;    /*  Dark Purple - Secondary Accent */
+    --brand-color-accent: #03DAC5;       /*  Teal/Cyan -  Highlight/Interactive Accent (Material Design) */
+
+    /* Dark Neutral Tones -  Deep & Elegant */
+    --background-color-body: #121212;    /*  Deep Charcoal - Body Background */
+    --background-color-card: #1E1E1E;     /*  Darker Grey - Card Background (Slightly Lighter than Body) */
+    --text-color-primary: #E0E0E0;       /*  Off-White - Primary Text (High Contrast) */
+    --text-color-secondary: #A0A0A0;     /*  Medium Grey - Secondary Text, Subtitles (Less Emphasis) */
+
+    /* UI Elements - Consistent Spacing, Radius, Shadows (Dark Theme Optimized) */
+    --border-radius-base: 14px;          /*  Slightly More Rounded Corners for Dark Theme */
+    --spacing-unit: 18px;               /*  Slightly Increased Base Spacing for Dark Theme Breathing Room */
+    --padding-base: var(--spacing-unit); /*  Standard Padding */
+    --margin-base: var(--spacing-unit);  /*  Standard Margin */
+
+    /* Shadows -  Subtle Depth (Dark Theme Shadows are often softer) */
+    --box-shadow-light: 0 3px 8px rgba(0,0,0,0.25);   /*  Light Shadow for Cards (Softer for Dark Theme) */
+    --box-shadow-medium: 0 6px 15px rgba(0,0,0,0.4); /*  Medium Shadow for Hover/Focus (Softer for Dark Theme) */
+    --box-shadow-hover: 0 8px 20px rgba(0,0,0,0.5); /*  Slightly Deeper Shadow on Hover (Softer for Dark Theme) */
+
+    /* Transition - Smooth Interactions (Consistent) */
+    --transition-duration: 0.3s;        /*  Slightly Longer Transition Duration for Dark Theme */
+    --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);    /*  Smooth Ease-in-out for Dark Theme */
+}
+
+/* -------------------------------------------------- */
+/* ✨ Base Styles - Body and Main Container (Dark Mode Optimized) ✨ */
+/* -------------------------------------------------- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color-body);
+    color: var(--text-color-primary);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.main {
+    position: relative;
+    /* Removed top offset to prevent clipping */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(var(--padding-base) * 1.2);
+    padding-top: calc(var(--padding-base) * 5);
+}
+
+/* -------------------------------------------------- */
+/* ✨ Search Bar - Elevated and Focused Design (Dark Mode) ✨ */
+/* -------------------------------------------------- */
+#search {
+    width: 100%;
+    max-width: 520px;
+    height: 56px;
+    border: none;
+    background-color: var(--background-color-card);
+    color: var(--text-color-primary);
+    font-size: 1.2rem;
+    padding: 0 calc(var(--padding-base) * 1.8);
+    border-radius: calc(var(--border-radius-base) * 1.5);
+    box-shadow: var(--box-shadow-medium);
+    transition: box-shadow var(--transition-duration) var(--transition-easing),
+                transform var(--transition-duration) var(--transition-easing);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#search::placeholder {
+    color: var(--text-color-secondary);
+    opacity: 0.75;
+}
+
+#search:focus {
+    box-shadow: var(--box-shadow-hover);
+    transform: translateY(-4px);
+    border-color: var(--brand-color-accent);
+}
+
+/* -------------------------------------------------- */
+/* ✨ App Grid - Flexible and Spaced Layout (Dark Mode) ✨ */
+/* -------------------------------------------------- */
+#apps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: calc(var(--margin-base) * 3);
+    max-width: 1440px;
+    padding: 0;
+}
+
+/* -------------------------------------------------- */
+/* ✨ App Card - Modern and Interactive Styling (Dark Mode) ✨ */
+/* -------------------------------------------------- */
+#app {
+    width: 250px;
+    margin: var(--margin-base);
+    padding: calc(var(--padding-base) * 1.5);
+    background-color: var(--background-color-card);
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--box-shadow-light);
+    transition: transform var(--transition-duration) var(--transition-easing),
+                box-shadow var(--transition-duration) var(--transition-easing);
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#app:hover {
+    transform: translateY(-12px);
+    box-shadow: var(--box-shadow-hover);
+    background-color: #2c2c2c;
+}
+
+#app:active {
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow-medium);
+}
+
+/* App title (Dark Mode) */
+#app div {
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-top: calc(var(--margin-base) * 0.9);
+    color: var(--text-color-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 var(--padding-base);
+}
+
+/* App images - Improved Display (Dark Mode) */
+#app img {
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--border-radius-base) * 0.7);
+    display: block;
+    object-fit: cover;
+    margin-bottom: calc(var(--margin-base) * 0.6);
+    transition: transform var(--transition-duration) var(--transition-easing);
+    opacity: 0.95;
+}
+
+#app:hover img {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+/* -------------------------------------------------- */
+/* ✨ Responsive Design - Adjust for Smaller Screens (Dark Mode) ✨ */
+/* -------------------------------------------------- */
+@media (max-width: 768px) {
+    .main {
+        top: 140px;
+        padding: var(--padding-base);
+    }
+
+    #search {
+        max-width: 95%;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    #apps {
+        margin-top: var(--margin-base);
+    }
+
+    #app {
+        width: calc(50% - calc(var(--margin-base) * 2));
+        max-width: 280px;
+        margin: var(--margin-base);
+        padding: calc(var(--padding-base) * 1);
+    }
+
+    #app div {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    #app:hover {
+        transform: translateY(0);
+        box-shadow: var(--box-shadow-light);
+        background-color: #2c2c2c;
+    }
+    #app {
+        width: 240px;
+        height: 320px;
+        overflow: hidden;
+    }
+    #app img {
+        width: 100%;
+        height: 60%;
+        border-radius: calc(var(--border-radius-base) * 0.7);
+        display: block;
+        object-fit: cover;
+        margin-bottom: calc(var(--margin-base) * 0.6);
+        transition: transform var(--transition-duration) var(--transition-easing);
+        opacity: 0.95;
+    }
+    #app div {
+        font-size: 1rem;
+        margin-top: 0;
+        padding-left: var(--padding-base);
+        text-align: left;
+    }
+}
+:root {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --accent: #bb86fc;
+    --border-radius: 12px;
+    --transition: 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    padding: 2rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+#search {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+    border: var(--bg-secondary) 2px solid;
+    border-radius: var(--border-radius);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: var(--transition);
+}
+
+#search:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.3);
+}
+ 
+#apps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: 150px;
+    padding: var(--spacing-unit);
+    box-sizing: border-box;
+}
+ 
+.app {
+    background: var(--background-color-card);
+    border-radius: var(--border-radius-base);
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: transform var(--transition-duration) var(--transition-easing), box-shadow var(--transition-duration) var(--transition-easing), background-color var(--transition-duration) var(--transition-easing);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: var(--box-shadow-light);
+    height: 180px;
+    justify-content: center;
+    text-align: center;
+}
+
+.app a {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.app-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    background: rgba(255,255,255,0.08);
+    box-shadow: var(--box-shadow-hover);
+}
+ 
+.app-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    background: var(--background-color-body);
+    padding: 0.6rem;
+    box-shadow: var(--box-shadow-medium);
+    transition: box-shadow var(--transition-duration) var(--transition-easing);
+}
+ 
+.app-icon:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+ 
+.app-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color-primary);
+    margin: 0;
+    line-height: 1.2;
+    user-select: none;
+}
+ 
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .apps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: var(--spacing-unit);
+    }
+}
+/* Style for search and category filter container */
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+/* Style for search input */
+#search {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: var(--border-radius-base);
+  border: none;
+  width: 250px;
+  background-color: var(--background-color-card);
+  color: var(--text-color-primary);
+  box-shadow: var(--box-shadow-light);
+  transition: box-shadow var(--transition-duration) var(--transition-easing);
+}
+
+#search:focus {
+  outline: none;
+  box-shadow: var(--box-shadow-medium);
+}
+
+/* Style for category select */
+#categorySelect {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: var(--border-radius-base);
+  border: none;
+  background-color: var(--background-color-card);
+  color: var(--text-color-primary);
+  box-shadow: var(--box-shadow-light);
+  cursor: pointer;
+  transition: box-shadow var(--transition-duration) var(--transition-easing);
+  min-width: 180px;
+  padding: 25px;
+}
+
+#categorySelect:hover,
+#categorySelect:focus {
+  box-shadow: var(--box-shadow-medium);
+  outline: none;
+}

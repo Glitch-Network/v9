@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            transition: background-color 0.3s ease;
+        }
+
+        .dashboard-container.dark-mode {
+            background-color: #1e1e1e;
+        }
+
+        .dashboard-item {
+            background-color: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dashboard-item.dark-mode {
+            background-color: #2d2d2d;
+            color: #cccccc;
+        }
+
+        .dashboard-item h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-item.dark-mode h2 {
+            color: #eee;
+        }
+
+        .time-display {
+            font-size: 2rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-item.dark-mode .time-display {
+            color: #ddd;
+        }
+
+        .weather-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .weather-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-temp {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #f87a6a;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-item.dark-mode .weather-temp {
+            color: #f87a6a;
+        }
+
+        .weather-desc {
+            font-size: 0.875rem;
+            color: #718096;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-item.dark-mode .weather-desc {
+            color: #bbb;
+        }
+
+        .news-container {
+            grid-column: 1 / -1; /* Make news span across all columns */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .news-container.dark-mode {
+            background-color: #2d2d2d;
+            color: #cccccc;
+        }
+
+        .news-container h2 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .news-container.dark-mode h2 {
+            color: #eee;
+        }
+
+        .news-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            transition: border-color 0.3s ease;
+        }
+
+        .news-container.dark-mode .news-item {
+            border-bottom-color: #555;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-item h3 {
+            font-size: 1rem;
+            font-weight: medium;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .news-container.dark-mode .news-item h3 a {
+            color: #fff;
+        }
+
+        .news-item p {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-bottom: 0.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .news-container.dark-mode .news-item p {
+            color: #ccc;
+        }
+
+        .news-item a {
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .news-container.dark-mode .news-item a {
+            color: #5dade2;
+        }
+
+        .news-item small {
+            color: #a0aec0;
+            transition: color 0.3s ease;
+        }
+
+        .news-container.dark-mode .news-item small {
+            color: #bbb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 dark:text-white">
+
+    <div class="dashboard-container">
+        <div class="dashboard-item bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+            <h2 class="text-xl font-semibold mb-4">Current Time</h2>
+            <div id="time" class="time-display text-3xl font-bold text-gray-800 dark:text-gray-200"></div>
+        </div>
+
+        <div class="dashboard-item bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+            <h2 class="text-xl font-semibold mb-4">Weather</h2>
+            <div class="weather-info">
+                <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon">
+                <div id="weather-temp" class="weather-temp text-xl text-red-500 dark:text-red-400"></div>
+                <div id="weather-desc" class="weather-desc text-sm text-gray-600 dark:text-gray-400"></div>
+            </div>
+        </div>
+
+        <div id="news-container" class="news-container dark:bg-gray-800 dark:text-white">
+            <h2 class="text-xl font-semibold mb-4">World News</h2>
+            </div>
+    </div>
+
+    <script>
+        const body = document.body;
+        const dashboardContainer = document.querySelector('.dashboard-container');
+        const dashboardItems = document.querySelectorAll('.dashboard-item');
+        const newsContainer = document.getElementById('news-container');
+
+        function updateTime() {
+            const now = new Date();
+            const timeElement = document.getElementById('time');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString(undefined, dateOptions);
+            timeElement.textContent = `${dateString} ${hours}:${minutes}:${seconds}`;
+        }
+
+        function getWeather() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    fetchWeather(latitude, longitude);
+                }, () => {
+                    fetchWeather(40.7128, -74.0060); // Default to New York if geolocation fails
+                });
+            } else {
+                fetchWeather(40.7128, -74.0060); // Default if geolocation is not supported
+            }
+        }
+
+        async function fetchWeather(latitude, longitude) {
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                const temperatureElement = document.getElementById('weather-temp');
+                const descriptionElement = document.getElementById('weather-desc');
+                const iconElement = document.getElementById('weather-icon');
+
+                const tempCelsius = data.current_weather.temperature;
+                const tempFahrenheit = (tempCelsius * 9/5) + 32;
+                temperatureElement.textContent = `${Math.round(tempFahrenheit)}°F`;
+                descriptionElement.textContent = getWeatherDescription(data.current_weather.weathercode);
+                iconElement.src = getWeatherIcon(data.current_weather.weathercode);
+
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                document.getElementById('weather-temp').textContent = 'Error';
+                document.getElementById('weather-desc').textContent = 'Could not load weather data.';
+                document.getElementById('weather-icon').src = ''; // Clear error icon
+            }
+        }
+
+        function getWeatherIcon(weatherCode) {
+            const iconBaseUrl = "assets/weather/";
+            switch (weatherCode) {
+                case 0: return `${iconBaseUrl}day.svg`;
+                case 1: case 2: case 3: return `${iconBaseUrl}cloudy-day-2.svg`;
+                case 45: case 48: return `${iconBaseUrl}cloudy.svg`;
+                case 51: case 53: case 55: return `${iconBaseUrl}rainy-1.svg`;
+                case 56: case 57: return `${iconBaseUrl}snowy-1.svg`;
+                case 61: case 63: case 65: return `${iconBaseUrl}rainy-2.svg`;
+                case 66: case 67: return `${iconBaseUrl}snowy-2.svg`;
+                case 71: case 73: case 75: return `${iconBaseUrl}snowy-3.svg`;
+                case 77: return `${iconBaseUrl}snowy-4.svg`;
+                case 80: case 81: case 82: return `${iconBaseUrl}rainy-3.svg`;
+                case 85: case 86: return `${iconBaseUrl}snowy-5.svg`;
+                case 95 : case 96: case 99: return `${iconBaseUrl}thunder.svg`;
+                default: return `${iconBaseUrl}cloudy-day-2.svg`;
+            }
+        }
+
+        function getWeatherDescription(weatherCode) {
+            const descriptions = {
+                0: "Clear sky",
+                1: "Mainly clear",
+                2: "Partly cloudy",
+                3: "Overcast",
+                45: "Fog",
+                48: "Depositing rime fog",
+                51: "Drizzle: Light intensity",
+                53: "Drizzle: Moderate intensity",
+                55: "Drizzle: Dense intensity",
+                56: "Freezing Drizzle: Light intensity",
+                57: "Freezing Drizzle: Dense intensity",
+                61: "Rain: Slight intensity",
+                63: "Rain: Moderate intensity",
+                65: "Rain: Heavy intensity",
+                66: "Freezing Rain: Light intensity",
+                67: "Freezing Rain: Heavy intensity",
+                71: "Snow fall: Slight intensity",
+                73: "Snow fall: Moderate intensity",
+                75: "Snow fall: Heavy intensity",
+                77: "Snow grains",
+                80: "Rain showers: Slight intensity",
+                81: "Rain showers: Moderate intensity",
+                82: "Rain showers: Violent intensity",
+                85: "Snow showers: Slight intensity",
+                86: "Snow showers: Heavy intensity",
+                95: "Thunderstorm: Slight or moderate",
+                96: "Thunderstorm with slight hail",
+                99: "Thunderstorm with heavy hail"
+            };
+            return descriptions[weatherCode] || "Unknown";
+        }
+
+        async function fetchNews() {
+            const newsApiUrls = ['https://saurav.tech/NewsAPI/everything/fox-news.json','https://saurav.tech/NewsAPI/everything/cnn.json','https://saurav.tech/NewsAPI/everything/bbc-news.json'];
+            let allArticles = [];
+
+            for (const newsApiUrl of newsApiUrls) {
+                try {
+                    const response = await fetch(newsApiUrl);
+                    const data = await response.json();
+                    if (data.articles && data.articles.length > 0) {
+                        allArticles = allArticles.concat(data.articles);
+                    } else {
+                        console.warn(`No articles found for URL: ${newsApiUrl}`);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching news data from ${newsApiUrl}:`, error);
+                }
+            }
+
+            // Basic shuffling to show variety
+            shuffleArray(allArticles);
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            if (allArticles.length > 0) {
+                newsContainer.innerHTML = '<h2 class="text-xl font-semibold mb-4">World News</h2>'; // Re-add the title
+                allArticles.slice(0, 5).forEach(article => {
+                    const newsItemDiv = document.createElement('div');
+                    newsItemDiv.classList.add('news-item', 'p-2');
+                    newsItemDiv.innerHTML = `
+                        <h3 class="font-semibold text-gray-800 dark:text-white"><a href="../launch.html?url=${article.url}">${article.title}</a></h3>
+                        <p class="text-gray-600 dark:text-gray-400">${article.description || 'No description available'}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-300"><small>Source: ${article.source.name || 'Unknown'}</small></p>
+                    `;
+                    newsContainer.appendChild(newsItemDiv);
+                });
+            } else {
+                newsContainer.innerHTML = '<h2 class="text-xl font-semibold mb-4">World News</h2><p>Could not load news data from any sources.</p>';
+            }
+        }
+
+        updateTime();
+        getWeather();
+        fetchNews();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
